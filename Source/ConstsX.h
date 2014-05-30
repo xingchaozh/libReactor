@@ -20,6 +20,8 @@
 
 #define MAX_DGRAM_BUFFER_SIZE 1400
 
+#define MAX_SIZE_OF_RING_BUFFER 64
+
 #ifndef SOCKET_ERROR
 #define SOCKET_ERROR            (-1)
 #endif

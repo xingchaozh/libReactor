@@ -45,7 +45,7 @@ void ServerAccepter::ThreadEntryPoint()
 
 	while(m_bEnabled)
 	{
-		if (IsReadable(m_socket->GetSocket(),&iErrorCode,m_timeOut))
+		if (SocketXO::IsReadable(m_socket->GetSocket(),&iErrorCode,m_timeOut))
 		{
 			ret = HandleInput();
 			if (ret <= 0)

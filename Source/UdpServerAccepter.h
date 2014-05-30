@@ -30,10 +30,10 @@ public:
 	UdpServerAccepter();
 	UdpServerAccepter(UdpSocketXO * socket);
 	~UdpServerAccepter(void);
-	LockFreeQueues *  GetBufferQueue();
+	LockFreeQueue *  GetBufferQueue();
 protected:
 	virtual int HandleInput();
-	virtual void ProcessData(UdpBufferRev * bufferRev);
+	virtual void ProcessData(UdpBufferRev & bufferRev);
 protected:
-	LockFreeQueues * m_queue;
+	LockFreeQueue * m_queue;
 };

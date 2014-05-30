@@ -1,0 +1,147 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="libReator">
+      <UniqueIdentifier>{89ed4df3-d4b2-46ab-ae6f-17c1d335badb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Demo">
+      <UniqueIdentifier>{5e3616eb-8aac-424e-b9ae-b984e465cb79}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\Source\ClientConnector.h">
+      <Filter>libReator</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\CommonX.h">
+      <Filter>libReator</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\ConstsX.h">
+      <Filter>libReator</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\EventXO.h">
+      <Filter>libReator</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\Helper.h">
+      <Filter>libReator</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\LockFreeQueues.h">
+      <Filter>libReator</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\Log.h">
+      <Filter>libReator</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\LogUseBuffer.h">
+      <Filter>libReator</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\MutexXO.h">
+      <Filter>libReator</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\ObserverX.h">
+      <Filter>libReator</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\ServerAccepter.h">
+      <Filter>libReator</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\SocketXO.h">
+      <Filter>libReator</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\SubjectX.h">
+      <Filter>libReator</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\TcpSocketXO.h">
+      <Filter>libReator</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\ThreadX.h">
+      <Filter>libReator</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\TypesX.h">
+      <Filter>libReator</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\UdpDataProcesser.h">
+      <Filter>libReator</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\UdpServerAccepter.h">
+      <Filter>libReator</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\UdpSocketXO.h">
+      <Filter>libReator</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Demo\UdpClient.h">
+      <Filter>Demo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Demo\UdpServer.h">
+      <Filter>Demo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\SvcHandler.h">
+      <Filter>libReator</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\UdpClientConnector.h">
+      <Filter>libReator</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\Source\ClientConnector.cpp">
+      <Filter>libReator</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\EventXO.cpp">
+      <Filter>libReator</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\Helper.cpp">
+      <Filter>libReator</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\LockFreeQueues.cpp">
+      <Filter>libReator</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\Log.cpp">
+      <Filter>libReator</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\LogUseBuffer.cpp">
+      <Filter>libReator</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\MutexXO.cpp">
+      <Filter>libReator</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\ObserverX.cpp">
+      <Filter>libReator</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\ServerAccepter.cpp">
+      <Filter>libReator</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\SocketXO.cpp">
+      <Filter>libReator</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\SubjectX.cpp">
+      <Filter>libReator</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\TcpSocketXO.cpp">
+      <Filter>libReator</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\ThreadX.cpp">
+      <Filter>libReator</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\UdpDataProcesser.cpp">
+      <Filter>libReator</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\UdpServerAccepter.cpp">
+      <Filter>libReator</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\UdpSocketXO.cpp">
+      <Filter>libReator</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Demo\libReactorDemo.cpp">
+      <Filter>Demo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Demo\UdpClient.cpp">
+      <Filter>Demo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Demo\UdpServer.cpp">
+      <Filter>Demo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\SvcHandler.cpp">
+      <Filter>libReator</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\UdpClientConnector.cpp">
+      <Filter>libReator</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

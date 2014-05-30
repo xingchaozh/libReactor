@@ -37,7 +37,7 @@ void ClientConnector::ThreadEntryPoint()
 		HandleOutput();
 
 		int iErrorCode = 0;
-		if(IsReadable(m_socket->GetSocket(),&iErrorCode,m_timeOut))
+		if(SocketXO::IsReadable(m_socket->GetSocket(),&iErrorCode,m_timeOut))
 		{
 			HandleInput();
 		}

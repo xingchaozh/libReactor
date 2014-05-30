@@ -16,95 +16,80 @@
 */
 #include "LockFreeQueues.h"
 
-LockFreeQueues::LockFreeQueues(void)
+LockFreeQueue::LockFreeQueue(int s)
 {
+	size_ = s;
+	head_index_ = 0;
+	tail_index_ = 0;
+	element_num_ = 0;
+
 	InitQueue();
 }
 
-LockFreeQueues::~LockFreeQueues(void)
+//Non-ThreadSafe
+bool LockFreeQueue::InitQueue(void)
 {
+	flags_array_ = new(std::nothrow) std::atomic<int>[size_];
+	if (flags_array_ == NULL)
+		return false;
+	memset(flags_array_, 0, size_);
+
+	ring_array_ = reinterpret_cast<ElementT*>(new(std::nothrow) char[size_ * sizeof(ElementT)]);
+	if (ring_array_ == NULL)
+		return false;
+	memset(ring_array_, 0, size_ * sizeof(ElementT));
+
+	return true;
 }
 
-void LockFreeQueues::InitQueue()
+//ThreadSafe
+bool LockFreeQueue::EnQueue(const ElementT & ele)
 {
-	memset(m_ringBuffer,0,sizeof(RingArray));
-	m_headOffset = 0;
-	m_tailOffset = 1;
-	m_ringBuffer[m_headOffset].type = RAN_TYPE_HEAD;
-	m_ringBuffer[m_tailOffset].type = RAN_TYPE_TAIL;
+	if (!(element_num_ < size_))
+		return false;
+
+	int cur_tail_index = tail_index_;
+	std::atomic<int> * cur_tail_flag_index = flags_array_ + cur_tail_index;
+
+	while (!CAS(cur_tail_flag_index, 0, 1)) 
+	{
+		cur_tail_index = tail_index_;
+		cur_tail_flag_index = flags_array_ + cur_tail_index;
+	}
+
+	int update_tail_index = (cur_tail_index + 1) % size_;
+
+	CAS(&tail_index_, cur_tail_index, update_tail_index);
+	*(ring_array_ + cur_tail_index) = ele;
+
+	FetchADD(cur_tail_flag_index, 1);
+	FetchADD(&element_num_, 1);
+
+	return true;
 }
 
-int LockFreeQueues::EnQueue(RingArrayNodeDataType * value)
+//ThreadSafe
+bool LockFreeQueue::DeQueue(ElementT * ele) 
 {
-	RingArrayNodeType nodeType = RAN_TYPE_TAIL;
-	int p = -1;
-	int q = -1;
-	do
-	{
-		p = m_tailOffset % MAX_SIZE_OF_RING_BUFFER;
-		q = (m_tailOffset+1)% MAX_SIZE_OF_RING_BUFFER;
+	if (!(element_num_ > 0))
+		return false;
 
-		if(m_ringBuffer[q].type != RAN_TYPE_EMPTY)
-		{
-			return ERR_FULL_QUEUE;
-		}
+	int cur_head_index = head_index_;
+	std::atomic<int> * cur_head_flag_index = flags_array_ + cur_head_index;
+	while (!CAS(cur_head_flag_index, 2, 3)) 
+	{
+		cur_head_index = head_index_;
+		cur_head_flag_index = flags_array_ + cur_head_index;
 	}
-	while (CAS(&(m_ringBuffer[p].type),&nodeType,RAN_TYPE_CHANGE) != true);
 
-	memcpy(&m_ringBuffer[p].value,value,sizeof(RingArrayNodeDataType));
+	int update_head_index = (cur_head_index + 1) % size_;
 
-	nodeType = RAN_TYPE_EMPTY;
-	do
-	{
-		q = (m_tailOffset+1)% MAX_SIZE_OF_RING_BUFFER;
-	}
-	while(CAS(&(m_ringBuffer[q].type),&nodeType,RAN_TYPE_TAIL)!=true);
+	CAS(&head_index_, cur_head_index, update_head_index);
 
-	nodeType = RAN_TYPE_CHANGE;
-	do
-	{
-		p = m_tailOffset % MAX_SIZE_OF_RING_BUFFER;;
-	}
-	while(CAS(&(m_ringBuffer[p].type),&nodeType,RAN_TYPE_DATA)!=true);
+	*ele = *(ring_array_ + cur_head_index);
 
-	FetchADD(&m_tailOffset,1);
+	FetchSub(cur_head_flag_index, 3);
+	FetchSub(&element_num_, 1);
 
-	return 0;
-}
-
-int LockFreeQueues::DeQueue(RingArrayNodeDataType * value)
-{
-	RingArrayNodeType nodeType = RAN_TYPE_HEAD;
-	int p = -1;
-	int q = -1;
-	do
-	{
-		p = m_headOffset % MAX_SIZE_OF_RING_BUFFER;
-		q = (m_headOffset+1)% MAX_SIZE_OF_RING_BUFFER;
-		if (m_ringBuffer[q].type != RAN_TYPE_DATA)
-		{
-			return ERR_EMPTY_QUEUE;
-		}
-	}
-	while(CAS(&(m_ringBuffer[p].type),&nodeType,RAN_TYPE_CHANGE) != true);
-
-	memcpy(value,&m_ringBuffer[q].value,sizeof(RingArrayNodeDataType));
-	
-	nodeType = RAN_TYPE_DATA;
-	do
-	{
-		q = (m_headOffset+1)% MAX_SIZE_OF_RING_BUFFER;
-	}
-	while(CAS(&(m_ringBuffer[q].type),&nodeType,RAN_TYPE_HEAD)!=true);
-
-	nodeType = RAN_TYPE_CHANGE;
-	do
-	{
-		p = m_headOffset % MAX_SIZE_OF_RING_BUFFER;
-	} 
-	while (CAS(&(m_ringBuffer[p].type),&nodeType,RAN_TYPE_EMPTY)!=true);
-
-	FetchADD(&m_headOffset,1);
-
-	return 0;
+	return true;
 }

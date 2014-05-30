@@ -19,13 +19,13 @@
 UdpServerAccepter::UdpServerAccepter()
 {
 	m_socketType = SOCKET_TYPE_UDP;
-	m_queue = new LockFreeQueues();
+	m_queue = new LockFreeQueue();
 }
 
 UdpServerAccepter::UdpServerAccepter(UdpSocketXO * socket)
 {
 	m_socketType = SOCKET_TYPE_UDP;
-	m_queue = new LockFreeQueues();
+	m_queue = new LockFreeQueue();
 
 	SetUdpSocket(socket);
 }
@@ -57,23 +57,23 @@ int UdpServerAccepter::HandleInput()
 	{
 		//Process the income data
 		bufferRev.fromAddr = tmpAddr;
-		ProcessData(&bufferRev);
+		ProcessData(bufferRev);
 	}
 
 	return bufferRev.bufferRev.length;
 }
 
-void UdpServerAccepter::ProcessData(UdpBufferRev * bufferRev)
+void UdpServerAccepter::ProcessData(UdpBufferRev & bufferRev)
 {
 	//for(int i = 0;i<8;i++)//just for test
-	if(m_queue->EnQueue(bufferRev) < 0)
+	if(!m_queue->EnQueue(bufferRev))
 	{
 		printf("EnQueue Error!\n");
 	}
 	this->Notify();
 }
 
-LockFreeQueues * UdpServerAccepter::GetBufferQueue()
+LockFreeQueue * UdpServerAccepter::GetBufferQueue()
 {
 	return m_queue;
 }

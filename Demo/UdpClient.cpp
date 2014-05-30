@@ -18,7 +18,6 @@ void UdpClient::Start(string localHost,
 					  string remoteHost,
 					  int remotePort)
 {
-
 	m_udpClientConnector = new UdpClientConnector();
 	m_udpClientConnector->Initialize(localHost,localPort,remoteHost,remotePort);
 	m_udpClientConnector->SetTimeOut(50);
@@ -35,7 +34,7 @@ void UdpClient::Start(string localHost,
 
 	while (true)
 	{
-		m_udpClientConnector->GetBufferQueue()->EnQueue(&bufferSend);
-		Sleep(500);
+		m_udpClientConnector->GetBufferQueue()->EnQueue(bufferSend);
+		Sleep(50);
 	}
 }

@@ -57,7 +57,7 @@ void UdpDataProcesser::ThreadEntryPoint()
 		m_hThreadEventNewData->WaitEvent();
 
 		UdpBufferRev bufferRev;
-		while(m_udpServerAccepter->GetBufferQueue()->DeQueue(&bufferRev) >= 0)
+		while(m_udpServerAccepter->GetBufferQueue()->DeQueue(&bufferRev))
 		{
 			ProcessData(&bufferRev);
 		}

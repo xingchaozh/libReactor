@@ -14,61 +14,59 @@
 *                                        INCLUDE FILES
 *********************************************************************************************************
 */
-#pragma once
+#ifndef LOCKFREEQUEUE_H
+#define LOCKFREEQUEUE_H
 
 #include "CommonX.h"
+#include <iostream>
+#include <stdlib.h>
+#include <string.h>
 
-#include <iostream>       // std::cout
-#include <atomic>         // std::atomic
-#include <thread>         // std::thread
+#include <atomic>
 
-typedef UdpBufferRev RingArrayNodeDataType;
+using namespace std;
 
-#define MAX_SIZE_OF_RING_BUFFER 64
-typedef enum _RingArrayNodeType
-{
-	RAN_TYPE_EMPTY,      //0
-	RAN_TYPE_HEAD,       //1
-	RAN_TYPE_TAIL,       //2
-	RAN_TYPE_DATA,       //3
-	RAN_TYPE_CHANGE      //4
-}RingArrayNodeType;
-typedef struct _RingBArrayNode
-{
-	std::atomic<RingArrayNodeType> type;
-	RingArrayNodeDataType value;
-}RingArrayNode;
-typedef RingArrayNode RingArray[MAX_SIZE_OF_RING_BUFFER];
+typedef UdpBufferRev ElementT;
 
-#define ERR_EMPTY_QUEUE -1
-#define ERR_FULL_QUEUE -2
-
-class LockFreeQueues
+class LockFreeQueue
 {
 public:
-	LockFreeQueues(void);
-	virtual ~LockFreeQueues(void);
-public:
-	int EnQueue(RingArrayNodeDataType * value);
-	int DeQueue(RingArrayNodeDataType * value);
-protected:
-	void InitQueue();
+	LockFreeQueue(int s = MAX_SIZE_OF_RING_BUFFER);
+	~LockFreeQueue() {}
 
-	//compare_and_swap
+	bool InitQueue(void);
+
+	bool EnQueue(const ElementT & ele);
+
+	bool DeQueue(ElementT * ele);
+
+	//__sync_bool_compare_and_swap
 	template<class T>
-	bool CAS (std::atomic<T> * reg, T * old, T newVal)
-	{//atomic_compare_exchange_weak
-		return std::atomic_compare_exchange_weak(reg,old,newVal);
+	inline bool CAS (std::atomic<T> * reg, T old, T newVal)
+	{
+		return std::atomic_compare_exchange_weak(reg,&old,newVal);
 	}
 
 	//__sync_fetch_and_add
-	int FetchADD(std::atomic<int> * v, int add)
-	{//atomic_fetch_add
+	inline int FetchADD(std::atomic<int> * v, int add)
+	{
 		return std::atomic_fetch_add(v,add) ;
 	}
-protected:
-	RingArray m_ringBuffer;
-	std::atomic<int> m_headOffset;
-	std::atomic<int> m_tailOffset;
+
+	//__sync_fetch_and_sub
+	inline int FetchSub(std::atomic<int> * v, int add)
+	{
+		return std::atomic_fetch_sub(v,add) ;
+	}
+
+private:
+	ElementT * ring_array_;
+	std::atomic<int> * flags_array_;//flags: 0£ºempty£»1£ºenqueue-ing 2£ºenqueue-able;3,dequeue-ing;
+	int size_;
+	std::atomic<int> element_num_;
+	std::atomic<int> head_index_;
+	std::atomic<int> tail_index_;
 };
 
+
+#endif // LOCKFREEQUEUE_H

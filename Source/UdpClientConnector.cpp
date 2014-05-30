@@ -19,7 +19,7 @@
 UdpClientConnector::UdpClientConnector(void)
 {
 	m_socketType = SOCKET_TYPE_UDP;
-	m_queue = new LockFreeQueues();
+	m_queue = new LockFreeQueue();
 }
 
 UdpClientConnector::~UdpClientConnector(void)
@@ -31,9 +31,10 @@ int UdpClientConnector::HandleOutput()
 {
 	UdpBufferRev bufferRev;
 	int len = 0;
-	while(GetBufferQueue()->DeQueue(&bufferRev) >= 0)
+	while(GetBufferQueue()->DeQueue(&bufferRev))
 	{
 		len = ((UdpSocketXO *)m_socket)->SendTo(bufferRev.bufferRev.buffer,bufferRev.bufferRev.length,(sockaddr *)&m_serverAddr,sizeof(m_serverAddr));
+		printf("send %d\n",len);
 	}
 	return len;
 }
@@ -73,10 +74,9 @@ void UdpClientConnector::ProcessData(UdpBufferRev * bufferRev)
 	static int index = 0;
 	printf("(%d) Rev msg from (%s:%d) :%s\n",index++, inet_ntoa(bufferRev->fromAddr.sin_addr),bufferRev->fromAddr.sin_port,bufferRev->bufferRev.buffer);
 #endif
-	//this->Notify();
 }
 
-LockFreeQueues * UdpClientConnector::GetBufferQueue()
+LockFreeQueue * UdpClientConnector::GetBufferQueue()
 {
 	return m_queue;
 }

@@ -43,6 +43,8 @@ public:
 	static void FD_SET_X(SOCKET sock, fd_set * fds);
 	static int FD_ISSET_X(SOCKET sock, fd_set * fds);
 
+	static int IsReadable(int socketId,int * errorCode,int timeOut);
+
 	virtual void Create(int af, int type, int protocol);
 	int Bind(sockaddr * name);
 	void Close();

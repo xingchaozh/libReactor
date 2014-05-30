@@ -25,7 +25,7 @@ class UdpClientConnector :
 public:
 	UdpClientConnector(void);
 	~UdpClientConnector(void);
-	LockFreeQueues *  GetBufferQueue();
+	LockFreeQueue *  GetBufferQueue();
 	void SetTimeOut(long timeOut)
 	{
 		m_timeOut = timeOut;
@@ -35,5 +35,5 @@ protected:
 	virtual int HandleInput();
 	void ProcessData(UdpBufferRev * bufferRev);
 protected:
-	LockFreeQueues * m_queue;
+	LockFreeQueue * m_queue;
 };
