@@ -63,6 +63,7 @@ private:
 	ElementT * ring_array_;
 	std::atomic<int> * flags_array_;//flags: 0£ºempty£»1£ºenqueue-ing 2£ºenqueue-able;3,dequeue-ing;
 	int size_;
+	int exponent_size_;
 	std::atomic<int> element_num_;
 	std::atomic<int> head_index_;
 	std::atomic<int> tail_index_;

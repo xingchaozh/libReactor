@@ -16,9 +16,12 @@
 */
 #include "LockFreeQueues.h"
 
+#include <math.h>
+
 LockFreeQueue::LockFreeQueue(int s)
 {
-	size_ = s;
+	size_ = s;//s shall be exponential times of 2, such as 16, 32, 64, 128, 256, 521, 1024 and so on. or fast modulo operation will fail.
+	exponent_size_ = (int)(log(size_)/log(2));
 	head_index_ = 0;
 	tail_index_ = 0;
 	element_num_ = 0;
@@ -57,7 +60,8 @@ bool LockFreeQueue::EnQueue(const ElementT & ele)
 		cur_tail_flag_index = flags_array_ + cur_tail_index;
 	}
 
-	int update_tail_index = (cur_tail_index + 1) % size_;
+	//int update_tail_index = (cur_tail_index + 1) % size_;
+	int update_tail_index = (cur_tail_index + 1) & ((1<<exponent_size_) - 1);
 
 	CAS(&tail_index_, cur_tail_index, update_tail_index);
 	*(ring_array_ + cur_tail_index) = ele;
@@ -80,9 +84,13 @@ bool LockFreeQueue::DeQueue(ElementT * ele)
 	{
 		cur_head_index = head_index_;
 		cur_head_flag_index = flags_array_ + cur_head_index;
+
+		if (!(element_num_ > 0))
+			return false;
 	}
 
-	int update_head_index = (cur_head_index + 1) % size_;
+	//int update_head_index = (cur_head_index + 1) % size_;
+	int update_head_index = (cur_head_index + 1) & ((1<<exponent_size_) - 1);
 
 	CAS(&head_index_, cur_head_index, update_head_index);
 
