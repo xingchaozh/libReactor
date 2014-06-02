@@ -19,7 +19,7 @@
 UdpClientConnector::UdpClientConnector(void)
 {
 	m_socketType = SOCKET_TYPE_UDP;
-	m_queue = new LockFreeQueue();
+	m_queue = new LockFreeQueue<UdpBufferRev>();
 }
 
 UdpClientConnector::~UdpClientConnector(void)
@@ -76,7 +76,7 @@ void UdpClientConnector::ProcessData(UdpBufferRev * bufferRev)
 #endif
 }
 
-LockFreeQueue * UdpClientConnector::GetBufferQueue()
+LockFreeQueue<UdpBufferRev> * UdpClientConnector::GetBufferQueue()
 {
 	return m_queue;
 }

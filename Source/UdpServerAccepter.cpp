@@ -19,13 +19,13 @@
 UdpServerAccepter::UdpServerAccepter()
 {
 	m_socketType = SOCKET_TYPE_UDP;
-	m_queue = new LockFreeQueue();
+	m_queue = new LockFreeQueue<UdpBufferRev>();
 }
 
 UdpServerAccepter::UdpServerAccepter(UdpSocketXO * socket)
 {
 	m_socketType = SOCKET_TYPE_UDP;
-	m_queue = new LockFreeQueue();
+	m_queue = new LockFreeQueue<UdpBufferRev>();
 
 	SetUdpSocket(socket);
 }
@@ -73,7 +73,7 @@ void UdpServerAccepter::ProcessData(UdpBufferRev & bufferRev)
 	this->Notify();
 }
 
-LockFreeQueue * UdpServerAccepter::GetBufferQueue()
+LockFreeQueue<UdpBufferRev> * UdpServerAccepter::GetBufferQueue()
 {
 	return m_queue;
 }
