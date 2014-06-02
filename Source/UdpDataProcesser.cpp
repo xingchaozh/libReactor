@@ -18,16 +18,16 @@
 
 UdpDataProcesser::UdpDataProcesser(void)
 {
-	m_hThreadEventNewData = new EventXO();
-	m_bEnabled = true;
+	threadEventNewData_ = new EventXO();
+	enabled_ = true;
 }
 
 UdpDataProcesser::UdpDataProcesser(UdpServerAccepter * udpServerAccepter)
 {
-	m_udpServerAccepter = udpServerAccepter;
-	m_udpServerAccepter->Attach(this);
+	udpServerAccepter_ = udpServerAccepter;
+	udpServerAccepter_->Attach(this);
 
-	m_hThreadEventNewData = new EventXO();
+	threadEventNewData_ = new EventXO();
 }
 
 UdpDataProcesser::~UdpDataProcesser(void)
@@ -36,7 +36,7 @@ UdpDataProcesser::~UdpDataProcesser(void)
 
 void UdpDataProcesser::Update(SubjectX * sub)
 {
-	m_hThreadEventNewData->SetEventX();
+	threadEventNewData_->SetEventX();
 }
 
 void UdpDataProcesser::ProcessData(UdpBufferRev * bufferRev)
@@ -47,17 +47,17 @@ void UdpDataProcesser::ProcessData(UdpBufferRev * bufferRev)
 	printf("(%d) %d Rev msg from (%s:%d) : length:%d\n",index++,this->GetThreadId(),inet_ntoa(bufferRev->fromAddr.sin_addr),bufferRev->fromAddr.sin_port,bufferRev->bufferRev.length);
 #endif
 	char buffer[]="Ack from server.";
-	((UdpSocketXO *)m_udpServerAccepter->GetUdpSocket())->SendTo(buffer,strlen(buffer),(sockaddr *)&(bufferRev->fromAddr),sizeof(bufferRev->fromAddr));
+	((UdpSocketXO *)udpServerAccepter_->GetUdpSocket())->SendTo(buffer,strlen(buffer),(sockaddr *)&(bufferRev->fromAddr),sizeof(bufferRev->fromAddr));
 }
 
 void UdpDataProcesser::ThreadEntryPoint()
 {
-	while (m_bEnabled)
+	while (enabled_)
 	{
-		m_hThreadEventNewData->WaitEvent();
+		threadEventNewData_->WaitEvent();
 
 		UdpBufferRev bufferRev;
-		while(m_udpServerAccepter->GetBufferQueue()->DeQueue(&bufferRev))
+		while(udpServerAccepter_->GetBufferQueue()->DeQueue(&bufferRev))
 		{
 			ProcessData(&bufferRev);
 		}

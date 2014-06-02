@@ -16,7 +16,7 @@
 */
 #include "ClientConnector.h"
 
-ClientConnector::ClientConnector(SokectType sokectType, long timeOut):m_bEnabled(true),m_socketType(sokectType),m_timeOut(timeOut)
+ClientConnector::ClientConnector(SokectType sokectType, long timeOut):enabled_(true),socketType_(sokectType),timeOut_(timeOut)
 {
 }
 
@@ -27,17 +27,17 @@ ClientConnector::~ClientConnector(void)
 
 void ClientConnector::SetEnable(bool bEnabled)
 {
-	m_bEnabled = bEnabled;
+	enabled_ = bEnabled;
 }
 
 void ClientConnector::ThreadEntryPoint()
 {
-	while(m_bEnabled)
+	while(enabled_)
 	{
 		HandleOutput();
 
 		int iErrorCode = 0;
-		if(SocketXO::IsReadable(m_socket->GetSocket(),&iErrorCode,m_timeOut))
+		if(SocketXO::IsReadable(socket_->GetSocket(),&iErrorCode,timeOut_))
 		{
 			HandleInput();
 		}
@@ -50,24 +50,24 @@ void ClientConnector::Initialize(string localHost,
 								 int remotePort)
 {
 	SocketXO::StartupService();
-	switch (m_socketType)
+	switch (socketType_)
 	{
 	case SOCKET_TYPE_TCP:
-		m_socket = new TcpSocketXO();
-		((TcpSocketXO *)m_socket)->Create();
+		socket_ = new TcpSocketXO();
+		((TcpSocketXO *)socket_)->Create();
 		break;
 	case SOCKET_TYPE_UDP:
-		m_socket = new UdpSocketXO();
-		((UdpSocketXO *)m_socket)->Create();
+		socket_ = new UdpSocketXO();
+		((UdpSocketXO *)socket_)->Create();
 		break;
 	default:
 		break;
 	}
-	m_socket->Bind((sockaddr*)&(SocketXO::GetSockAddr(localHost,localPort)));
-	m_serverAddr = SocketXO::GetSockAddr(remoteHost,remotePort);
+	socket_->Bind((sockaddr*)&(SocketXO::GetSockAddr(localHost,localPort)));
+	serverAddr_ = SocketXO::GetSockAddr(remoteHost,remotePort);
 }
 
 sockaddr_in ClientConnector::GetServerAddr()
 {
-	return m_serverAddr;
+	return serverAddr_;
 }

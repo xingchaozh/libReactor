@@ -28,6 +28,6 @@ public:
 	void WaitEvent();
 	void Destroy();
 private:
-	HANDLE m_hEvent;
+	HANDLE hEvent_;
 };
 

@@ -42,9 +42,9 @@ class ThreadX
 public:
 	string threadName;
 protected:
-	HANDLE m_handle;
-	unsigned int m_threadId;
-	string m_threadName;
+	HANDLE handle_;
+	unsigned int threadId_;
+	string threadName_;
 
 public:
 	ThreadX();

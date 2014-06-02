@@ -16,14 +16,14 @@
 */
 #include "ServerAccepter.h"
 
-ServerAccepter::ServerAccepter(SokectType sokectType, long timeOut):m_bEnabled(true),m_socketType(sokectType),m_timeOut(timeOut)
+ServerAccepter::ServerAccepter(SokectType sokectType, long timeOut):enabled_(true),socketType_(sokectType),timeOut_(timeOut)
 {
 }
 
 ServerAccepter::ServerAccepter(string localHost,
 								int localPort,
 								SokectType sokectType,
-								long timeOut):m_bEnabled(true),m_socketType(sokectType),m_timeOut(timeOut)
+								long timeOut):enabled_(true),socketType_(sokectType),timeOut_(timeOut)
 {
 	Initialize(localHost, localPort);
 }
@@ -35,7 +35,7 @@ ServerAccepter::~ServerAccepter(void)
 
 void ServerAccepter::SetEnable(bool bEnabled)
 {
-	m_bEnabled = bEnabled;
+	enabled_ = bEnabled;
 }
 
 void ServerAccepter::ThreadEntryPoint()
@@ -43,9 +43,9 @@ void ServerAccepter::ThreadEntryPoint()
 	int ret = 0;
 	int iErrorCode = 0;
 
-	while(m_bEnabled)
+	while(enabled_)
 	{
-		if (SocketXO::IsReadable(m_socket->GetSocket(),&iErrorCode,m_timeOut))
+		if (SocketXO::IsReadable(socket_->GetSocket(),&iErrorCode,timeOut_))
 		{
 			ret = HandleInput();
 			if (ret <= 0)
@@ -60,18 +60,18 @@ void ServerAccepter::Initialize(string localHost,
 								int localPort)
 {
 	SocketXO::StartupService();
-	switch (m_socketType)
+	switch (socketType_)
 	{
 	case SOCKET_TYPE_TCP:
-		m_socket = new TcpSocketXO();
-		((TcpSocketXO *)m_socket)->Create();
+		socket_ = new TcpSocketXO();
+		((TcpSocketXO *)socket_)->Create();
 		break;
 	case SOCKET_TYPE_UDP:
-		m_socket = new UdpSocketXO();
-		((UdpSocketXO *)m_socket)->Create();
+		socket_ = new UdpSocketXO();
+		((UdpSocketXO *)socket_)->Create();
 		break;
 	default:
 		break;
 	}
-	m_socket->Bind((sockaddr*)&(SocketXO::GetSockAddr(localHost,localPort)));
+	socket_->Bind((sockaddr*)&(SocketXO::GetSockAddr(localHost,localPort)));
 }

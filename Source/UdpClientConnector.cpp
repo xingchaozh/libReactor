@@ -18,13 +18,13 @@
 
 UdpClientConnector::UdpClientConnector(void)
 {
-	m_socketType = SOCKET_TYPE_UDP;
-	m_queue = new LockFreeQueue<UdpBufferRev>();
+	socketType_ = SOCKET_TYPE_UDP;
+	queue_ = new LockFreeQueue<UdpBufferRev>();
 }
 
 UdpClientConnector::~UdpClientConnector(void)
 {
-	delete m_queue;
+	delete queue_;
 }
 
 int UdpClientConnector::HandleOutput()
@@ -33,7 +33,7 @@ int UdpClientConnector::HandleOutput()
 	int len = 0;
 	while(GetBufferQueue()->DeQueue(&bufferRev))
 	{
-		len = ((UdpSocketXO *)m_socket)->SendTo(bufferRev.bufferRev.buffer,bufferRev.bufferRev.length,(sockaddr *)&m_serverAddr,sizeof(m_serverAddr));
+		len = ((UdpSocketXO *)socket_)->SendTo(bufferRev.bufferRev.buffer,bufferRev.bufferRev.length,(sockaddr *)&serverAddr_,sizeof(serverAddr_));
 		printf("send %d\n",len);
 	}
 	return len;
@@ -48,7 +48,7 @@ int UdpClientConnector::HandleInput()
 	memset(bufferRev.bufferRev.buffer,0,MAX_DGRAM_BUFFER_SIZE);
 	char * ptr = (char *)&(bufferRev.bufferRev.buffer);
 
-	bufferRev.bufferRev.length = ((UdpSocketXO *)m_socket)->RecvFrom(ptr,MAX_DGRAM_BUFFER_SIZE,(sockaddr *)&tmpAddr,&tmpAddrLen);
+	bufferRev.bufferRev.length = ((UdpSocketXO *)socket_)->RecvFrom(ptr,MAX_DGRAM_BUFFER_SIZE,(sockaddr *)&tmpAddr,&tmpAddrLen);
 
 	if(SOCKET_ERROR == bufferRev.bufferRev.length)
 	{
@@ -78,5 +78,5 @@ void UdpClientConnector::ProcessData(UdpBufferRev * bufferRev)
 
 LockFreeQueue<UdpBufferRev> * UdpClientConnector::GetBufferQueue()
 {
-	return m_queue;
+	return queue_;
 }

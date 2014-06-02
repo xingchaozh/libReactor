@@ -47,21 +47,6 @@ public:
 		delete [] ring_array_;
 	}
 
-	bool InitQueue(void)
-	{
-		flags_array_ = new(std::nothrow) std::atomic<int>[size_];
-		if (flags_array_ == NULL)
-			return false;
-		memset(flags_array_, 0, size_);
-
-		ring_array_ = reinterpret_cast<ItemT*>(new(std::nothrow) char[size_ * sizeof(ItemT)]);
-		if (ring_array_ == NULL)
-			return false;
-		memset(ring_array_, 0, size_ * sizeof(ItemT));
-
-		return true;
-	}
-
 	bool EnQueue(const ItemT & item)
 	{
 		if (!(item_num_ < size_))
@@ -113,6 +98,22 @@ public:
 
 		FetchSub(cur_head_flag_index, 3);
 		FetchSub(&item_num_, 1);
+
+		return true;
+	}
+
+private:
+	bool InitQueue(void)
+	{
+		flags_array_ = new(std::nothrow) std::atomic<int>[size_];
+		if (flags_array_ == NULL)
+			return false;
+		memset(flags_array_, 0, size_);
+
+		ring_array_ = reinterpret_cast<ItemT*>(new(std::nothrow) char[size_ * sizeof(ItemT)]);
+		if (ring_array_ == NULL)
+			return false;
+		memset(ring_array_, 0, size_ * sizeof(ItemT));
 
 		return true;
 	}

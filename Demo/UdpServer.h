@@ -13,6 +13,6 @@ public:
 public:
 	void Start(string localHost, int localPort);
 public:
-	UdpServerAccepter * m_serverAccepter;
-	vector<UdpDataProcesser *> m_vecDataProcesser;
+	UdpServerAccepter * serverAccepter_;
+	vector<UdpDataProcesser *> vecDataProcesser_;
 };

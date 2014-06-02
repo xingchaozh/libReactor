@@ -49,10 +49,10 @@ public:
 	int Bind(sockaddr * name);
 	void Close();
 
-	SOCKET GetSocket() const { return m_socket; }
-	void SetSocket(SOCKET val) { m_socket = val; }
+	SOCKET GetSocket() const { return socket_; }
+	void SetSocket(SOCKET val) { socket_ = val; }
 protected:
-	SOCKET m_socket;
+	SOCKET socket_;
 };
 
 

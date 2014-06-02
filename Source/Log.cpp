@@ -17,7 +17,7 @@
 #include "Log.h"
 Log::Log()
 {
-	m_bLogEnabled = true;
+	logEnabled_ = true;
 }
 
 Log::~Log()
@@ -27,9 +27,9 @@ Log::~Log()
 
 bool Log::Open(string sFileName)
 {
-	m_logFile = fopen(sFileName.c_str(),"w");
+	logFile_ = fopen(sFileName.c_str(),"w");
 
-	if( !m_logFile )
+	if( !logFile_ )
 	{
 		return false;
 	}
@@ -38,22 +38,22 @@ bool Log::Open(string sFileName)
 
 void Log::Close()
 {
-	fclose(m_logFile);
+	fclose(logFile_);
 }
 
 void Log::Enable()
 {
-	m_bLogEnabled = true;
+	logEnabled_ = true;
 }
 
 void Log::Disable()
 {
-	m_bLogEnabled = false;
+	logEnabled_ = false;
 }
 
 int Log::Size()
 {
-	FILE* fp = m_logFile;
+	FILE* fp = logFile_;
 	fseek(fp,0,SEEK_END);
 	return ftell(fp);
 }

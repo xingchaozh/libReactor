@@ -29,16 +29,16 @@ public:
 public:
 	void Initialize(string localHost,int localPort);
 	void SetEnable(bool bEnabled);
-	SocketXO * GetUdpSocket() const { return m_socket; }
-	void SetUdpSocket(SocketXO * val) { m_socket = val; }
+	SocketXO * GetUdpSocket() const { return socket_; }
+	void SetUdpSocket(SocketXO * val) { socket_ = val; }
 protected:
 	virtual int HandleInput() = 0;
 private:
 	virtual void ThreadEntryPoint();
 
 protected:
-	SokectType m_socketType;
-	SocketXO * m_socket;
-	bool m_bEnabled;//whether the thread is enabled
-	long m_timeOut;//milliseconds
+	SokectType socketType_;
+	SocketXO * socket_;
+	bool enabled_;//whether the thread is enabled
+	long timeOut_;//milliseconds
 };

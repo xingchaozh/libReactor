@@ -24,4 +24,8 @@
 
 #ifndef SOCKET_ERROR
 #define SOCKET_ERROR            (-1)
+
 #endif
+
+#define LOG_BUFFER_SIZE (1024*1) //Bytes
+#define MAX_SINGLE_LOG_FILE_SIZE (1024 * 1024 * 30) //Bytes

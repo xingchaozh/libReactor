@@ -35,5 +35,5 @@ protected:
 	virtual int HandleInput();
 	virtual void ProcessData(UdpBufferRev & bufferRev);
 protected:
-	LockFreeQueue<UdpBufferRev> * m_queue;
+	LockFreeQueue<UdpBufferRev> * queue_;
 };

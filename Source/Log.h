@@ -17,11 +17,14 @@
 #ifndef _LOG_H_
 #define _LOG_H_
 
+#include "CommonX.h"
+
 #include <fstream>
 #include <string>
 #include <sstream>
 #include <ctime>
 using namespace std;
+
 
 class Log
 {
@@ -43,8 +46,8 @@ protected:
 		return ost.str();
 	}
 protected:
-	FILE * m_logFile;
-	bool m_bLogEnabled;
+	FILE * logFile_;
+	bool logEnabled_;
 };
 
 #endif

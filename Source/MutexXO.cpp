@@ -23,25 +23,25 @@ MutexXO::MutexXO(void)
 
 MutexXO::~MutexXO(void)
 {
-	CloseHandle(m_hMutex);
+	CloseHandle(hMutex_);
 }
 
 void MutexXO::MutexInit()
 {
-	m_hMutex = CreateMutex(NULL,FALSE,NULL);
+	hMutex_ = CreateMutex(NULL,FALSE,NULL);
 }
 
 DWORD MutexXO::MutexLock(DWORD dwMilliseconds)
 {
-	return WaitForSingleObject(m_hMutex,dwMilliseconds);
+	return WaitForSingleObject(hMutex_,dwMilliseconds);
 }
 
 DWORD MutexXO::MutexLock()
 {
-	return WaitForSingleObject(m_hMutex,INFINITE);
+	return WaitForSingleObject(hMutex_,INFINITE);
 }
 
 BOOL MutexXO::MutexUnlock()
 {
-	return ReleaseMutex(m_hMutex);
+	return ReleaseMutex(hMutex_);
 }

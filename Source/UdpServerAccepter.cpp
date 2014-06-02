@@ -18,21 +18,21 @@
 
 UdpServerAccepter::UdpServerAccepter()
 {
-	m_socketType = SOCKET_TYPE_UDP;
-	m_queue = new LockFreeQueue<UdpBufferRev>();
+	socketType_ = SOCKET_TYPE_UDP;
+	queue_ = new LockFreeQueue<UdpBufferRev>();
 }
 
 UdpServerAccepter::UdpServerAccepter(UdpSocketXO * socket)
 {
-	m_socketType = SOCKET_TYPE_UDP;
-	m_queue = new LockFreeQueue<UdpBufferRev>();
+	socketType_ = SOCKET_TYPE_UDP;
+	queue_ = new LockFreeQueue<UdpBufferRev>();
 
 	SetUdpSocket(socket);
 }
 
 UdpServerAccepter::~UdpServerAccepter(void)
 {
-	delete m_queue;
+	delete queue_;
 }
 
 int UdpServerAccepter::HandleInput()
@@ -43,7 +43,7 @@ int UdpServerAccepter::HandleInput()
 	UdpBufferRev bufferRev;
 	char * ptr = (char *)&(bufferRev.bufferRev.buffer);
 
-	bufferRev.bufferRev.length = ((UdpSocketXO *)m_socket)->RecvFrom(ptr,MAX_DGRAM_BUFFER_SIZE,(sockaddr *)&tmpAddr,&tmpAddrLen);
+	bufferRev.bufferRev.length = ((UdpSocketXO *)socket_)->RecvFrom(ptr,MAX_DGRAM_BUFFER_SIZE,(sockaddr *)&tmpAddr,&tmpAddrLen);
 
 	if(SOCKET_ERROR == bufferRev.bufferRev.length)
 	{
@@ -66,7 +66,7 @@ int UdpServerAccepter::HandleInput()
 void UdpServerAccepter::ProcessData(UdpBufferRev & bufferRev)
 {
 	//for(int i = 0;i<8;i++)//just for test
-	if(!m_queue->EnQueue(bufferRev))
+	if(!queue_->EnQueue(bufferRev))
 	{
 		printf("EnQueue Error!\n");
 	}
@@ -75,5 +75,5 @@ void UdpServerAccepter::ProcessData(UdpBufferRev & bufferRev)
 
 LockFreeQueue<UdpBufferRev> * UdpServerAccepter::GetBufferQueue()
 {
-	return m_queue;
+	return queue_;
 }

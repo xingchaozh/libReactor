@@ -30,7 +30,7 @@ public:
 	~UdpDataProcesser(void);
 	void SetEnable(bool bEnabled)
 	{
-		m_bEnabled = bEnabled;
+		enabled_ = bEnabled;
 	}
 protected:
 
@@ -39,8 +39,8 @@ protected:
 	virtual void Update(SubjectX * sub);
 
 private:
-	UdpServerAccepter * m_udpServerAccepter;
-	EventXO * m_hThreadEventNewData;
-	bool m_bEnabled;
+	UdpServerAccepter * udpServerAccepter_;
+	EventXO * threadEventNewData_;
+	bool enabled_;
 };
 

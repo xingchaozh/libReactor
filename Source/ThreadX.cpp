@@ -16,21 +16,21 @@
 */
 #include "ThreadX.h"
 
-ThreadX::ThreadX():m_handle(NULL),m_threadId(0),m_threadName("")
+ThreadX::ThreadX():handle_(NULL),threadId_(0),threadName_("")
 {
 }
 
 ThreadX::~ThreadX()  
 {
-	if(m_handle != NULL)
+	if(handle_ != NULL)
 	{
-		CloseHandle(m_handle);
+		CloseHandle(handle_);
 	}
 }
 
 void ThreadX::Start(bool bSuspend)
 {
-	m_handle = ThreadX::BeginThreadXDefault(this,&m_threadId, bSuspend);
+	handle_ = ThreadX::BeginThreadXDefault(this,&threadId_, bSuspend);
 }
 
 HANDLE ThreadX::BeginThreadXDefault(void * _ArgList, unsigned int * threadId, bool bSuspend)
@@ -78,27 +78,27 @@ unsigned __stdcall ThreadX::ThreadStaticEntryPoint(void * pThis)
 
 unsigned long ThreadX::ResumeThreadX()
 {
-	return ResumeThread(m_handle);
+	return ResumeThread(handle_);
 }
 
 unsigned long ThreadX::SuspendThreadX()
 {
-	return SuspendThread(m_handle);
+	return SuspendThread(handle_);
 }
 
 int ThreadX::TerminateThreadX(unsigned long dwExitCode)
 {
-	return TerminateThread(m_handle,dwExitCode);
+	return TerminateThread(handle_,dwExitCode);
 }
 
 int ThreadX::SetThreadPriorityX(int nPriority)
 {
-	return SetThreadPriority(m_handle,nPriority);
+	return SetThreadPriority(handle_,nPriority);
 }
 
 int ThreadX::GetThreadPriorityX()
 {
-	return GetThreadPriority(m_handle);
+	return GetThreadPriority(handle_);
 }
 
 void ThreadX::ExitThreadX(unsigned long dwExitCode)
@@ -108,25 +108,25 @@ void ThreadX::ExitThreadX(unsigned long dwExitCode)
 
 unsigned long ThreadX::WaitForExit(unsigned long dwMilliseconds)
 {
-	return WaitForSingleObject(m_handle,dwMilliseconds);
+	return WaitForSingleObject(handle_,dwMilliseconds);
 }
 
 string ThreadX::GetThreadName()
 {
-	return m_threadName;
+	return threadName_;
 }
 
 void ThreadX::SetThreadName(string threadName)
 {
-	m_threadName = threadName;
+	threadName_ = threadName;
 }
 
 unsigned int ThreadX::GetThreadId()
 {
-	return m_threadId;
+	return threadId_;
 }
 
 HANDLE ThreadX::GetThreadHandle()
 {
-	return m_handle;
+	return handle_;
 }

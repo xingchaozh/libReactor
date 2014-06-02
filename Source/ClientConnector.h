@@ -22,13 +22,14 @@ class ClientConnector :
 	public SvcHandler
 {
 public:
-	ClientConnector(SokectType socketType = SOCKET_TYPE_UDP, long timeOut = 1000);
+	ClientConnector(SokectType socketType = SOCKET_TYPE_UDP, long timeOut = 500);
 	virtual ~ClientConnector(void);
 public:
 	void Initialize(string localHost, int localPort, string remoteHost, int remotePort);
 	void SetEnable(bool bEnabled);
-	SocketXO * GetUdpSocket() const { return m_socket; }
-	void SetUdpSocket(SocketXO * val) { m_socket = val; }
+
+	SocketXO * GetUdpSocket() const { return socket_; }
+	void SetUdpSocket(SocketXO * val) { socket_ = val; }
 
 	sockaddr_in GetServerAddr();
 protected:
@@ -36,12 +37,13 @@ protected:
 	virtual int HandleInput() = 0;
 private:
 	virtual void ThreadEntryPoint();
-protected:
-	SokectType m_socketType;
-	SocketXO * m_socket;
-	bool m_bEnabled;
 
-	struct sockaddr_in m_serverAddr;
-	long m_timeOut;//milliseconds
+protected:
+	SokectType socketType_;
+	SocketXO * socket_;
+	bool enabled_;
+
+	struct sockaddr_in serverAddr_;
+	long timeOut_;//milliseconds
 };
 

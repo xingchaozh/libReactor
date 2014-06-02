@@ -12,8 +12,6 @@ using namespace std;
 class UdpClient
 {
 public:
-	SOCKET m_clientSocket;
-public:
 	UdpClient(void);
 	~UdpClient(void);
 public:
@@ -21,7 +19,9 @@ public:
 		int localPort,
 		string remoteHost,
 		int remotePort);
+public:
+	SOCKET clientSocket_;
 protected:
-	UdpClientConnector * m_udpClientConnector;
+	UdpClientConnector * udpClientConnector_;
 };
 

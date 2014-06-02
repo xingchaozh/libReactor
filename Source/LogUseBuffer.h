@@ -23,20 +23,21 @@ class LogUseBuffer :
 public:
 	LogUseBuffer(void);
 	virtual ~LogUseBuffer(void);
+
 public:
 	bool Open(string sFileName, bool bWithATime = false);
 	void Write(const char* buf, unsigned int size);
 	void WriteLn();
 	void Write(string str);
 	void WirteImmediately(const char* buf, unsigned int size);
+
 private:
 	void Flush();
-private:
-	static const int BUFFER_SIZE=1024*1;//Bytes
-	static const int MAX_SINGLE_LOG_FILE_SIZE = 1024 * 1024 * 30;//Bytes
-	char m_buffer[BUFFER_SIZE];
-	int m_current;
 
-	string m_sFileName;
-	bool m_bAtuoSplitFile;
+private:
+	char buffer_[LOG_BUFFER_SIZE];
+	int current_;
+
+	string fileName_;
+	bool autoSplitFile_;
 };

@@ -31,10 +31,10 @@ void UdpSocketXO::Create()
 
 int UdpSocketXO::RecvFrom(char * ptr, int len, sockaddr * from, int * fromlen)
 {
-	return recvfrom(m_socket,ptr,len,0,from,fromlen);
+	return recvfrom(socket_,ptr,len,0,from,fromlen);
 }
 
 int UdpSocketXO::SendTo(char * ptr, int len, sockaddr * to, int tolen)
 {
-	return sendto(m_socket,ptr,len,0,to,tolen);
+	return sendto(socket_,ptr,len,0,to,tolen);
 }

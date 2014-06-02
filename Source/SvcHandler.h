@@ -29,5 +29,4 @@ public:
 	virtual ~SvcHandler(void);
 protected:
 	virtual void ThreadEntryPoint() = 0;
-	int IsReadable(int socketId,int * errorCode,int timeOut); // milliseconds
 };

@@ -83,8 +83,8 @@ void SocketXO::Create(int af, int type, int protocol)
 	*/ 
 	//SOCKET socket(int af, int type, int protocol);
 	//m_socket = socket(AF_INET,SOCK_DGRAM,IPPROTO_UDP);
-	m_socket = socket(af,type,protocol);
-	if(INVALID_SOCKET == m_socket)
+	socket_ = socket(af,type,protocol);
+	if(INVALID_SOCKET == socket_)
 	{
 		StopService();
 		printf("socket() faild!\n");
@@ -95,7 +95,7 @@ void SocketXO::Create(int af, int type, int protocol)
 int SocketXO::Bind(sockaddr * addr)
 {
 	////bind socket to the host
-	int ret = bind(m_socket,addr,sizeof(sockaddr));
+	int ret = bind(socket_,addr,sizeof(sockaddr));
 	if(SOCKET_ERROR == ret)
 	{
 		printf("bind() faild! code:%d\n", WSAGetLastError());
@@ -107,7 +107,7 @@ int SocketXO::Bind(sockaddr * addr)
 
 void SocketXO::Close()
 {
-	closesocket(m_socket);
+	closesocket(socket_);
 }
 
 int SocketXO::IsReadable(int socketId,int * errorCode,int timeOut) // milliseconds

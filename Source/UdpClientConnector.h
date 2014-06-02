@@ -28,12 +28,12 @@ public:
 	LockFreeQueue<UdpBufferRev> *  GetBufferQueue();
 	void SetTimeOut(long timeOut)
 	{
-		m_timeOut = timeOut;
+		timeOut_ = timeOut;
 	}
 protected:
 	virtual int HandleOutput();
 	virtual int HandleInput();
 	void ProcessData(UdpBufferRev * bufferRev);
 protected:
-	LockFreeQueue<UdpBufferRev> * m_queue;
+	LockFreeQueue<UdpBufferRev> * queue_;
 };

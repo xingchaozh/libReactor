@@ -28,6 +28,6 @@ public:
 	DWORD MutexLock();
 	BOOL MutexUnlock();
 private:
-	HANDLE m_hMutex;
+	HANDLE hMutex_;
 };
 

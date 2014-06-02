@@ -27,20 +27,20 @@ EventXO::~EventXO(void)
 
 void EventXO::CreateEventX()
 {
-	m_hEvent = CreateEvent(NULL, FALSE, FALSE, NULL); 
+	hEvent_ = CreateEvent(NULL, FALSE, FALSE, NULL); 
 }
 
 void EventXO::SetEventX()
 {
-	SetEvent(m_hEvent);
+	SetEvent(hEvent_);
 }
 
 void EventXO::WaitEvent()
 {
-	WaitForSingleObject(m_hEvent,INFINITE);
+	WaitForSingleObject(hEvent_,INFINITE);
 }
 
 void EventXO::Destroy()
 {
-	CloseHandle(m_hEvent);
+	CloseHandle(hEvent_);
 }

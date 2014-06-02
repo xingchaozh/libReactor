@@ -1,19 +1,19 @@
 #include "UdpServer.h"
 
-UdpServer::UdpServer(void):m_serverAccepter(NULL)
+UdpServer::UdpServer(void):serverAccepter_(NULL)
 {
 }
 
 UdpServer::~UdpServer(void)
 {
-	if(NULL != m_serverAccepter)
+	if(NULL != serverAccepter_)
 	{
-		m_serverAccepter->SetEnable(false);
-		m_serverAccepter->WaitForExit();
+		serverAccepter_->SetEnable(false);
+		serverAccepter_->WaitForExit();
 	}
 
-	vector<UdpDataProcesser *>::iterator i = m_vecDataProcesser.begin();
-	for (; i != m_vecDataProcesser.end(); i++)
+	vector<UdpDataProcesser *>::iterator i = vecDataProcesser_.begin();
+	for (; i != vecDataProcesser_.end(); i++)
 	{
 		(*i)->SetEnable(false);
 		(*i)->WaitForExit();
@@ -24,23 +24,23 @@ void UdpServer::Start(string localHost,  //Local host location
 					  int localPort)     //Local host port
 {
 	//Create the communication server thread
-	m_serverAccepter = new UdpServerAccepter();
-	m_serverAccepter->Initialize(localHost,localPort);
-	m_serverAccepter->Start();
+	serverAccepter_ = new UdpServerAccepter();
+	serverAccepter_->Initialize(localHost,localPort);
+	serverAccepter_->Start();
 
 	//create the data process thread list
 	const int NUM_DATA_PROCESSER = 2;
 	for (int i = 0; i < NUM_DATA_PROCESSER; i++)
 	{
-		UdpDataProcesser * dataProcesser = new UdpDataProcesser(m_serverAccepter);
+		UdpDataProcesser * dataProcesser = new UdpDataProcesser(serverAccepter_);
 		dataProcesser->Start();
-		m_vecDataProcesser.push_back(dataProcesser);
+		vecDataProcesser_.push_back(dataProcesser);
 	}
 
 	//exit process
-	m_serverAccepter->WaitForExit();
-	vector<UdpDataProcesser *>::iterator i = m_vecDataProcesser.begin();
-	for (; i != m_vecDataProcesser.end(); i++)
+	serverAccepter_->WaitForExit();
+	vector<UdpDataProcesser *>::iterator i = vecDataProcesser_.begin();
+	for (; i != vecDataProcesser_.end(); i++)
 	{
 		(*i)->SetEnable(false);
 		(*i)->WaitForExit();
