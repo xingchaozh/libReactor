@@ -18,6 +18,7 @@
 
 TcpSocketXO::TcpSocketXO(void)
 {
+	Create();
 }
 
 TcpSocketXO::~TcpSocketXO(void)

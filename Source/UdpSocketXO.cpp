@@ -18,6 +18,7 @@
 
 UdpSocketXO::UdpSocketXO(void)
 {
+	Create();
 }
 
 UdpSocketXO::~UdpSocketXO(void)
@@ -29,12 +30,40 @@ void UdpSocketXO::Create()
 	SocketXO::Create(AF_INET,SOCK_DGRAM,IPPROTO_UDP);
 }
 
+int UdpSocketXO::RecvFrom(UdpBuffer & udpBuffer)
+{
+	return RecvFrom(udpBuffer.buffer.message,MAX_DGRAM_BUFFER_SIZE,udpBuffer.sockAddr);
+}
+
+int UdpSocketXO::RecvFrom(char * ptr, int len, SocketAddr & socketAddr)
+{
+	struct sockaddr_in addr;
+	int len_addr = sizeof(addr);
+
+	int ret =  RecvFrom(ptr,len,(sockaddr *)&addr,&len_addr);
+	socketAddr = SocketXO::GetSockAddr(addr);
+	return ret;
+}
+
 int UdpSocketXO::RecvFrom(char * ptr, int len, sockaddr * from, int * fromlen)
 {
 	return recvfrom(socket_,ptr,len,0,from,fromlen);
+}
+
+int UdpSocketXO::SendTo(UdpBuffer & udpBuffer)
+{
+	return SendTo(udpBuffer.buffer.message,udpBuffer.buffer.length,udpBuffer.sockAddr);
+}
+
+int UdpSocketXO::SendTo(char * ptr, int len, SocketAddr & socketAddr)
+{
+	sockaddr_in to = GetStdSockAddr(socketAddr);
+	int tolen = sizeof(to);
+	return SendTo(ptr,len,(sockaddr *)&to,tolen);
 }
 
 int UdpSocketXO::SendTo(char * ptr, int len, sockaddr * to, int tolen)
 {
 	return sendto(socket_,ptr,len,0,to,tolen);
 }
+

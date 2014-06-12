@@ -25,13 +25,11 @@ public:
 	ClientConnector(SokectType socketType = SOCKET_TYPE_UDP, long timeOut = 500);
 	virtual ~ClientConnector(void);
 public:
-	void Initialize(string localHost, int localPort, string remoteHost, int remotePort);
+	void Initialize(string localClientHost, int localClientPort, string remoteServerHost, int remoteServerPort);
 	void SetEnable(bool bEnabled);
 
-	SocketXO * GetUdpSocket() const { return socket_; }
-	void SetUdpSocket(SocketXO * val) { socket_ = val; }
-
-	sockaddr_in GetServerAddr();
+	SocketAddr GetServerAddr();
+	void SetTimeOut(long timeOut);
 protected:
 	virtual int HandleOutput() = 0;
 	virtual int HandleInput() = 0;
@@ -43,7 +41,7 @@ protected:
 	SocketXO * socket_;
 	bool enabled_;
 
-	struct sockaddr_in serverAddr_;
+	SocketAddr serverAddr_;
 	long timeOut_;//milliseconds
 };
 

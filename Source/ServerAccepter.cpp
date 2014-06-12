@@ -45,7 +45,7 @@ void ServerAccepter::ThreadEntryPoint()
 
 	while(enabled_)
 	{
-		if (SocketXO::IsReadable(socket_->GetSocket(),&iErrorCode,timeOut_))
+		if (socket_->IsReadable(timeOut_))
 		{
 			ret = HandleInput();
 			if (ret <= 0)
@@ -56,22 +56,25 @@ void ServerAccepter::ThreadEntryPoint()
 	}
 }
 
-void ServerAccepter::Initialize(string localHost,
-								int localPort)
+void ServerAccepter::Initialize(string localServerHost,
+								int localServerPort)
 {
 	SocketXO::StartupService();
 	switch (socketType_)
 	{
 	case SOCKET_TYPE_TCP:
 		socket_ = new TcpSocketXO();
-		((TcpSocketXO *)socket_)->Create();
 		break;
 	case SOCKET_TYPE_UDP:
 		socket_ = new UdpSocketXO();
-		((UdpSocketXO *)socket_)->Create();
 		break;
 	default:
 		break;
 	}
-	socket_->Bind((sockaddr*)&(SocketXO::GetSockAddr(localHost,localPort)));
+	socket_->Bind(localServerHost,localServerPort);
+}
+
+void ServerAccepter::SetTimeOut(long timeOut)
+{
+	timeOut_ = timeOut;
 }

@@ -40,7 +40,7 @@ void SocketXO::StopService()
 	WSACleanup();
 }
 
-sockaddr_in SocketXO::GetSockAddr(string localServerHost,int localServerPort)
+sockaddr_in SocketXO::GetStdSockAddr(string localServerHost,int localServerPort)
 {
 	struct sockaddr_in localAddr;
 	//set protocol family
@@ -52,6 +52,31 @@ sockaddr_in SocketXO::GetSockAddr(string localServerHost,int localServerPort)
 	localAddr.sin_addr.s_addr= inet_addr(localServerHost.c_str());//htonl(INADDR_ANY);
 	return localAddr;
 }
+
+sockaddr_in SocketXO::GetStdSockAddr(SocketAddr & socketAddr)
+{
+	return GetStdSockAddr(socketAddr.strAddress,socketAddr.port);
+}
+
+SocketAddr SocketXO::GetSockAddr(sockaddr_in & sockaddr)
+{
+	SocketAddr socketAddr;
+	memset(&socketAddr,0,sizeof(SocketAddr));
+	socketAddr.port = sockaddr.sin_port;
+	in_addr * in_addr_ = (in_addr*)(&(sockaddr.sin_addr.s_addr));
+	memcpy(socketAddr.strAddress,inet_ntoa(*in_addr_),strlen(inet_ntoa(*in_addr_)));
+	return socketAddr;
+}
+
+SocketAddr SocketXO::GetSockAddr(string host,int port)
+{
+	SocketAddr socketAddr;
+	memset(&socketAddr,0,sizeof(SocketAddr));
+	memcpy(socketAddr.strAddress,host.c_str(),host.length());
+	socketAddr.port = port;
+	return socketAddr;
+}
+
 
 int SocketXO::Select(int nfds, fd_set * readfds,fd_set * writefds,fd_set * exceptfds,timeval * timeout)
 {
@@ -105,9 +130,26 @@ int SocketXO::Bind(sockaddr * addr)
 	return ret;
 }
 
+int SocketXO::Bind(SocketAddr & addr)
+{
+	////bind socket to the host
+	return Bind((sockaddr *)&(GetStdSockAddr(addr)));
+}
+
+int SocketXO::Bind(string host,int port)
+{
+	return Bind(GetSockAddr(host,port));
+}
+
 void SocketXO::Close()
 {
 	closesocket(socket_);
+}
+
+int SocketXO::IsReadable(int timeOut)
+{
+	int errorCode;
+	return IsReadable(socket_,&errorCode,timeOut);
 }
 
 int SocketXO::IsReadable(int socketId,int * errorCode,int timeOut) // milliseconds
@@ -115,10 +157,10 @@ int SocketXO::IsReadable(int socketId,int * errorCode,int timeOut) // millisecon
 	fd_set socketReadSet;
 
 	//Initialize the set
-	SocketXO::FD_ZERO_X(&socketReadSet);
+	FD_ZERO_X(&socketReadSet);
 
 	//put m_socket->GetSocket() into the set
-	SocketXO::FD_SET_X(socketId,&socketReadSet);
+	FD_SET_X(socketId,&socketReadSet);
 
 	struct timeval tvTimeout;
 	if (timeOut > 0)
@@ -141,7 +183,7 @@ int SocketXO::IsReadable(int socketId,int * errorCode,int timeOut) // millisecon
 	}
 
 	*errorCode = 0;
-	return SocketXO::FD_ISSET_X(socketId,&socketReadSet) != 0;
+	return FD_ISSET_X(socketId,&socketReadSet) != 0;
 } /* isReadable */
 
 

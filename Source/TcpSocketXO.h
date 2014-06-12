@@ -22,7 +22,7 @@ class TcpSocketXO :
 public:
 	TcpSocketXO(void);
 	~TcpSocketXO(void);
-public:
+protected:
 	void Create();
 };
 

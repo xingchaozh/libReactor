@@ -27,15 +27,14 @@ public:
 	virtual ~ServerAccepter(void);
 
 public:
-	void Initialize(string localHost,int localPort);
+	void Initialize(string localServerHost,int localServerPort);
 	void SetEnable(bool bEnabled);
-	SocketXO * GetUdpSocket() const { return socket_; }
-	void SetUdpSocket(SocketXO * val) { socket_ = val; }
+	void SetTimeOut(long timeOut);
 protected:
 	virtual int HandleInput() = 0;
+
 private:
 	virtual void ThreadEntryPoint();
-
 protected:
 	SokectType socketType_;
 	SocketXO * socket_;

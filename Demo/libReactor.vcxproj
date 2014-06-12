@@ -84,6 +84,7 @@
     <ClInclude Include="..\Source\ClientConnector.h" />
     <ClInclude Include="..\Source\CommonX.h" />
     <ClInclude Include="..\Source\ConstsX.h" />
+    <ClInclude Include="..\Source\DataHandler.h" />
     <ClInclude Include="..\Source\EventXO.h" />
     <ClInclude Include="..\Source\Helper.h" />
     <ClInclude Include="..\Source\LockFreeQueues.h" />
@@ -102,12 +103,14 @@
     <ClInclude Include="..\Source\UdpDataProcesser.h" />
     <ClInclude Include="..\Source\UdpServerAccepter.h" />
     <ClInclude Include="..\Source\UdpSocketXO.h" />
+    <ClInclude Include="UdpServerDataHandler.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Demo\libReactorDemo.cpp" />
     <ClCompile Include="..\Demo\UdpClient.cpp" />
     <ClCompile Include="..\Demo\UdpServer.cpp" />
     <ClCompile Include="..\Source\ClientConnector.cpp" />
+    <ClCompile Include="..\Source\DataHandler.cpp" />
     <ClCompile Include="..\Source\EventXO.cpp" />
     <ClCompile Include="..\Source\Helper.cpp" />
     <ClCompile Include="..\Source\LockFreeQueues.cpp" />
@@ -125,6 +128,7 @@
     <ClCompile Include="..\Source\UdpDataProcesser.cpp" />
     <ClCompile Include="..\Source\UdpServerAccepter.cpp" />
     <ClCompile Include="..\Source\UdpSocketXO.cpp" />
+    <ClCompile Include="UdpServerDataHandler.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

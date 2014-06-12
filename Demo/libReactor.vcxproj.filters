@@ -78,6 +78,12 @@
     <ClInclude Include="..\Source\UdpClientConnector.h">
       <Filter>libReator</Filter>
     </ClInclude>
+    <ClInclude Include="..\Source\DataHandler.h">
+      <Filter>libReator</Filter>
+    </ClInclude>
+    <ClInclude Include="UdpServerDataHandler.h">
+      <Filter>Demo</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Source\ClientConnector.cpp">
@@ -142,6 +148,12 @@
     </ClCompile>
     <ClCompile Include="..\Source\UdpClientConnector.cpp">
       <Filter>libReator</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\DataHandler.cpp">
+      <Filter>libReator</Filter>
+    </ClCompile>
+    <ClCompile Include="UdpServerDataHandler.cpp">
+      <Filter>Demo</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

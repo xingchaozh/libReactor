@@ -1,5 +1,7 @@
 #include "UdpServer.h"
 
+#include "UdpServerDataHandler.h"
+
 UdpServer::UdpServer(void):serverAccepter_(NULL)
 {
 }
@@ -20,12 +22,13 @@ UdpServer::~UdpServer(void)
 	}
 }
 
-void UdpServer::Start(string localHost,  //Local host location
-					  int localPort)     //Local host port
+void UdpServer::Start(string localServerHost,  //Local host location
+					  int localServerPort, int remoteClientPort)     //Local host port
 {
 	//Create the communication server thread
 	serverAccepter_ = new UdpServerAccepter();
-	serverAccepter_->Initialize(localHost,localPort);
+	serverAccepter_->Initialize(localServerHost,localServerPort);
+	serverAccepter_->SetTimeOut(1000);
 	serverAccepter_->Start();
 
 	//create the data process thread list
@@ -33,6 +36,9 @@ void UdpServer::Start(string localHost,  //Local host location
 	for (int i = 0; i < NUM_DATA_PROCESSER; i++)
 	{
 		UdpDataProcesser * dataProcesser = new UdpDataProcesser(serverAccepter_);
+		//create the data handler for dataProcesser
+		UdpServerDataHandler * udpServerDataHandler = new UdpServerDataHandler(localServerHost,remoteClientPort);
+		dataProcesser->SetDataHanler(udpServerDataHandler);
 		dataProcesser->Start();
 		vecDataProcesser_.push_back(dataProcesser);
 	}

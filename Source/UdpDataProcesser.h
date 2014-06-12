@@ -21,6 +21,8 @@
 
 #include "EventXO.h"
 
+#include "DataHandler.h"
+
 class UdpDataProcesser :
 	public ObserverX, public ThreadX
 {
@@ -32,9 +34,13 @@ public:
 	{
 		enabled_ = bEnabled;
 	}
+	void SetDataHanler(DataHandler * dataHandler)
+	{
+		dataHandler_ = dataHandler;
+	}
 protected:
 
-	void ProcessData(UdpBufferRev * bufferRev);
+	void ProcessData(UdpBuffer & bufferRev);
 	virtual void ThreadEntryPoint();
 	virtual void Update(SubjectX * sub);
 
@@ -42,5 +48,6 @@ private:
 	UdpServerAccepter * udpServerAccepter_;
 	EventXO * threadEventNewData_;
 	bool enabled_;
+	DataHandler * dataHandler_;
 };
 

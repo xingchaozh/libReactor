@@ -18,15 +18,36 @@
 
 #include "ConstsX.h"
 
-typedef char Buffer[MAX_DGRAM_BUFFER_SIZE];
-typedef struct _BufferRev
-{
-	Buffer buffer;
-	int length;
-}BufferRev;
+#include <string>
+using namespace std;
 
-typedef struct _UdpBufferRev
+typedef unsigned short UShort;
+
+typedef unsigned int UInt;
+
+
+typedef struct _SocketAddr
 {
-	struct sockaddr_in fromAddr;
-	BufferRev bufferRev;
-}UdpBufferRev;
+	char strAddress[16];
+	UShort port;
+}SocketAddr;
+
+typedef char Message[MAX_DGRAM_BUFFER_SIZE];
+typedef struct _Buffer
+{
+	Message message;
+	int length;
+}Buffer;
+
+//typedef struct _UdpBuffer
+//{
+//	struct sockaddr_in sockAddr;
+//	Buffer buffer;
+//}UdpBuffer;
+
+typedef struct _UdpBuffer
+{
+	SocketAddr sockAddr;
+	Buffer buffer;
+}UdpBuffer;
+

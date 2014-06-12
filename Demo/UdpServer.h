@@ -11,7 +11,7 @@ public:
 	UdpServer(void);
 	~UdpServer(void);
 public:
-	void Start(string localHost, int localPort);
+	void Start(string localServerHost, int localServerPort, int remoteClientPort);
 public:
 	UdpServerAccepter * serverAccepter_;
 	vector<UdpDataProcesser *> vecDataProcesser_;

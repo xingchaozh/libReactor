@@ -18,6 +18,7 @@
 #include "ClientConnector.h"
 
 #include "LockFreeQueues.h"
+#include "DataHandler.h"
 
 class UdpClientConnector :
 	public ClientConnector
@@ -25,15 +26,16 @@ class UdpClientConnector :
 public:
 	UdpClientConnector(void);
 	~UdpClientConnector(void);
-	LockFreeQueue<UdpBufferRev> *  GetBufferQueue();
-	void SetTimeOut(long timeOut)
+	LockFreeQueue<UdpBuffer> *  GetOutputBufferQueue();
+	void SetDataHanler(DataHandler * dataHandler)
 	{
-		timeOut_ = timeOut;
+		dataHandler_ = dataHandler;
 	}
 protected:
 	virtual int HandleOutput();
 	virtual int HandleInput();
-	void ProcessData(UdpBufferRev * bufferRev);
+	void ProcessData(UdpBuffer & bufferRev);
 protected:
-	LockFreeQueue<UdpBufferRev> * queue_;
+	LockFreeQueue<UdpBuffer> * queueOutput_;
+	DataHandler * dataHandler_;
 };

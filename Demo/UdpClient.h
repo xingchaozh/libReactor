@@ -15,10 +15,10 @@ public:
 	UdpClient(void);
 	~UdpClient(void);
 public:
-	void Start(string localHost,
-		int localPort,
-		string remoteHost,
-		int remotePort);
+	void Start(string localClientHost,
+		int localClientPort,
+		string remoteServerHost,
+		int remoteServerPort);
 public:
 	SOCKET clientSocket_;
 protected:

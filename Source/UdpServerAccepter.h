@@ -28,12 +28,11 @@ class UdpServerAccepter :
 {
 public:
 	UdpServerAccepter();
-	UdpServerAccepter(UdpSocketXO * socket);
 	~UdpServerAccepter(void);
-	LockFreeQueue<UdpBufferRev> *  GetBufferQueue();
+	LockFreeQueue<UdpBuffer> *  GetInputBufferQueue();
 protected:
 	virtual int HandleInput();
-	virtual void ProcessData(UdpBufferRev & bufferRev);
+	virtual void ProcessData(UdpBuffer & bufferRev);
 protected:
-	LockFreeQueue<UdpBufferRev> * queue_;
+	LockFreeQueue<UdpBuffer> * queueInput_;
 };

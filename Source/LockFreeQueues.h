@@ -33,7 +33,6 @@ public:
 	LockFreeQueue(int s = MAX_SIZE_OF_RING_BUFFER)
 	{
 		size_ = s;//s shall be exponential times of 2, such as 16, 32, 64, 128, 256, 521, 1024 and so on. or fast modulo operation will fail.
-		//exponent_size_ = (int)(log(size_)/log(2));
 		head_index_ = 0;
 		tail_index_ = 0;
 		item_num_ = 0;

@@ -27,7 +27,7 @@ Log::~Log()
 
 bool Log::Open(string sFileName)
 {
-	logFile_ = fopen(sFileName.c_str(),"w");
+	fopen_s(&logFile_,sFileName.c_str(),"w");
 
 	if( !logFile_ )
 	{
@@ -62,7 +62,8 @@ string Log::GetCurTimeStr()
 {
 	time_t tNowTime;
 	time(&tNowTime);
-	tm* tLocalTime = localtime(&tNowTime);
+	tm* tLocalTime = NULL;//tm* tLocalTime = localtime(&tNowTime);
+	localtime_s(tLocalTime,&tNowTime);
 
 	string strDateTime = ValueToStr(tLocalTime->tm_year+1900) + "-" +
 		ValueToStr(tLocalTime->tm_mon+1)     + "-" +

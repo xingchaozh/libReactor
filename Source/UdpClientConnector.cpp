@@ -18,65 +18,68 @@
 
 UdpClientConnector::UdpClientConnector(void)
 {
+	dataHandler_ = NULL;
 	socketType_ = SOCKET_TYPE_UDP;
-	queue_ = new LockFreeQueue<UdpBufferRev>();
+	queueOutput_ = new LockFreeQueue<UdpBuffer>();
 }
 
 UdpClientConnector::~UdpClientConnector(void)
 {
-	delete queue_;
+	delete queueOutput_;
 }
 
 int UdpClientConnector::HandleOutput()
 {
-	UdpBufferRev bufferRev;
+	UdpBuffer bufferSend;
 	int len = 0;
-	while(GetBufferQueue()->DeQueue(&bufferRev))
+	while(GetOutputBufferQueue()->DeQueue(&bufferSend))
 	{
-		len = ((UdpSocketXO *)socket_)->SendTo(bufferRev.bufferRev.buffer,bufferRev.bufferRev.length,(sockaddr *)&serverAddr_,sizeof(serverAddr_));
-		printf("send %d\n",len);
+		len = ((UdpSocketXO *)socket_)->SendTo(bufferSend);
+#if LIB_REACTOR_DEBUG
+		printf("send len = %d\n",len);
+#endif
 	}
 	return len;
 }
 
 int UdpClientConnector::HandleInput()
 {
-	struct sockaddr_in tmpAddr;
-	int tmpAddrLen = sizeof(tmpAddr);
+	UdpBuffer bufferRev;
+	memset(&bufferRev,0,sizeof(UdpBuffer));
+	char * ptr = (char *)&(bufferRev.buffer.message);
 
-	UdpBufferRev bufferRev;
-	memset(bufferRev.bufferRev.buffer,0,MAX_DGRAM_BUFFER_SIZE);
-	char * ptr = (char *)&(bufferRev.bufferRev.buffer);
+	bufferRev.buffer.length = ((UdpSocketXO *)socket_)->RecvFrom(bufferRev);
 
-	bufferRev.bufferRev.length = ((UdpSocketXO *)socket_)->RecvFrom(ptr,MAX_DGRAM_BUFFER_SIZE,(sockaddr *)&tmpAddr,&tmpAddrLen);
-
-	if(SOCKET_ERROR == bufferRev.bufferRev.length)
+	if(SOCKET_ERROR == bufferRev.buffer.length)
 	{
 		return SOCKET_ERROR;
 	}
-	else if(0 == bufferRev.bufferRev.length)
+	else if(0 == bufferRev.buffer.length)
 	{
 		return 0;
 	}
 	else
 	{
 		//Process the income data
-		bufferRev.fromAddr = tmpAddr;
-		ProcessData(&bufferRev);
+		ProcessData(bufferRev);
 	}
 
-	return bufferRev.bufferRev.length;
+	return bufferRev.buffer.length;
 }
 
-void UdpClientConnector::ProcessData(UdpBufferRev * bufferRev)
+void UdpClientConnector::ProcessData(UdpBuffer & bufferRev)
 {
 #if LIB_REACTOR_DEBUG
 	static int index = 0;
-	printf("(%d) Rev msg from (%s:%d) :%s\n",index++, inet_ntoa(bufferRev->fromAddr.sin_addr),bufferRev->fromAddr.sin_port,bufferRev->bufferRev.buffer);
+	printf("(%d) Rev msg from (%s:%d) :%s\n",index++, bufferRev.sockAddr.strAddress,bufferRev.sockAddr.port,bufferRev.buffer.message);
 #endif
+	if(dataHandler_!=NULL)
+	{
+		dataHandler_->DataHanle(bufferRev);
+	}
 }
 
-LockFreeQueue<UdpBufferRev> * UdpClientConnector::GetBufferQueue()
+LockFreeQueue<UdpBuffer> * UdpClientConnector::GetOutputBufferQueue()
 {
-	return queue_;
+	return queueOutput_;
 }

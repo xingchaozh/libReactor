@@ -37,37 +37,40 @@ void ClientConnector::ThreadEntryPoint()
 		HandleOutput();
 
 		int iErrorCode = 0;
-		if(SocketXO::IsReadable(socket_->GetSocket(),&iErrorCode,timeOut_))
+		if(socket_->IsReadable(timeOut_))
 		{
 			HandleInput();
 		}
 	}
 }
 
-void ClientConnector::Initialize(string localHost,
-								 int localPort,
-								 string remoteHost,
-								 int remotePort)
+void ClientConnector::Initialize(string localClientHost,
+								 int localClientPort,
+								 string remoteServerHost,
+								 int remoteServerPort)
 {
 	SocketXO::StartupService();
 	switch (socketType_)
 	{
 	case SOCKET_TYPE_TCP:
 		socket_ = new TcpSocketXO();
-		((TcpSocketXO *)socket_)->Create();
 		break;
 	case SOCKET_TYPE_UDP:
 		socket_ = new UdpSocketXO();
-		((UdpSocketXO *)socket_)->Create();
 		break;
 	default:
 		break;
 	}
-	socket_->Bind((sockaddr*)&(SocketXO::GetSockAddr(localHost,localPort)));
-	serverAddr_ = SocketXO::GetSockAddr(remoteHost,remotePort);
+	socket_->Bind(localClientHost,localClientPort);
+	serverAddr_ = SocketXO::GetSockAddr(remoteServerHost,remoteServerPort);
 }
 
-sockaddr_in ClientConnector::GetServerAddr()
+SocketAddr ClientConnector::GetServerAddr()
 {
 	return serverAddr_;
+}
+
+void ClientConnector::SetTimeOut(long timeOut)
+{
+	timeOut_ = timeOut;
 }
