@@ -7,153 +7,171 @@
     <Filter Include="Demo">
       <UniqueIdentifier>{5e3616eb-8aac-424e-b9ae-b984e465cb79}</UniqueIdentifier>
     </Filter>
+    <Filter Include="libReator\Common">
+      <UniqueIdentifier>{121dfdb5-a8da-47bb-afa6-6884496b6d94}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="libReator\OSIS">
+      <UniqueIdentifier>{6acb061f-c72a-412d-aa6e-ee228f0aa724}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="libReator\NETS">
+      <UniqueIdentifier>{d46ae0f8-04da-4e6c-99de-d7726660bacf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="libReator\IF">
+      <UniqueIdentifier>{7133b99f-e017-4c01-8952-51d08bdd5d08}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="libReator\IOS">
+      <UniqueIdentifier>{7af6ca16-53e8-458f-b509-6b4b4e80fa85}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\Source\ClientConnector.h">
-      <Filter>libReator</Filter>
+    <ClInclude Include="..\Source\IOS\Log.h">
+      <Filter>libReator\IOS</Filter>
     </ClInclude>
-    <ClInclude Include="..\Source\CommonX.h">
-      <Filter>libReator</Filter>
+    <ClInclude Include="..\Source\OSIS\EventXO.h">
+      <Filter>libReator\OSIS</Filter>
     </ClInclude>
-    <ClInclude Include="..\Source\ConstsX.h">
-      <Filter>libReator</Filter>
+    <ClInclude Include="..\Source\OSIS\MutexXO.h">
+      <Filter>libReator\OSIS</Filter>
     </ClInclude>
-    <ClInclude Include="..\Source\EventXO.h">
-      <Filter>libReator</Filter>
+    <ClInclude Include="..\Source\OSIS\SocketXO.h">
+      <Filter>libReator\OSIS</Filter>
     </ClInclude>
-    <ClInclude Include="..\Source\Helper.h">
-      <Filter>libReator</Filter>
+    <ClInclude Include="..\Source\OSIS\TcpSocketXO.h">
+      <Filter>libReator\OSIS</Filter>
     </ClInclude>
-    <ClInclude Include="..\Source\LockFreeQueues.h">
-      <Filter>libReator</Filter>
+    <ClInclude Include="..\Source\OSIS\ThreadX.h">
+      <Filter>libReator\OSIS</Filter>
     </ClInclude>
-    <ClInclude Include="..\Source\Log.h">
-      <Filter>libReator</Filter>
+    <ClInclude Include="..\Source\OSIS\UdpSocketXO.h">
+      <Filter>libReator\OSIS</Filter>
     </ClInclude>
-    <ClInclude Include="..\Source\LogUseBuffer.h">
-      <Filter>libReator</Filter>
+    <ClInclude Include="..\Source\NETS\BufferContainer.h">
+      <Filter>libReator\NETS</Filter>
     </ClInclude>
-    <ClInclude Include="..\Source\MutexXO.h">
-      <Filter>libReator</Filter>
+    <ClInclude Include="..\Source\NETS\ClientConnector.h">
+      <Filter>libReator\NETS</Filter>
     </ClInclude>
-    <ClInclude Include="..\Source\ObserverX.h">
-      <Filter>libReator</Filter>
+    <ClInclude Include="..\Source\NETS\ServerAccepter.h">
+      <Filter>libReator\NETS</Filter>
     </ClInclude>
-    <ClInclude Include="..\Source\ServerAccepter.h">
-      <Filter>libReator</Filter>
+    <ClInclude Include="..\Source\NETS\SvcHandler.h">
+      <Filter>libReator\NETS</Filter>
     </ClInclude>
-    <ClInclude Include="..\Source\SocketXO.h">
-      <Filter>libReator</Filter>
+    <ClInclude Include="..\Source\IF\DataHandler.h">
+      <Filter>libReator\IF</Filter>
     </ClInclude>
-    <ClInclude Include="..\Source\SubjectX.h">
-      <Filter>libReator</Filter>
+    <ClInclude Include="..\Source\IF\IFS.h">
+      <Filter>libReator\IF</Filter>
     </ClInclude>
-    <ClInclude Include="..\Source\TcpSocketXO.h">
-      <Filter>libReator</Filter>
+    <ClInclude Include="..\Source\IOS\BufferLogger.h">
+      <Filter>libReator\IOS</Filter>
     </ClInclude>
-    <ClInclude Include="..\Source\ThreadX.h">
-      <Filter>libReator</Filter>
+    <ClInclude Include="..\Source\NETS\UClientConnector.h">
+      <Filter>libReator\NETS</Filter>
     </ClInclude>
-    <ClInclude Include="..\Source\TypesX.h">
-      <Filter>libReator</Filter>
+    <ClInclude Include="..\Source\NETS\UDataProcesser.h">
+      <Filter>libReator\NETS</Filter>
     </ClInclude>
-    <ClInclude Include="..\Source\UdpDataProcesser.h">
-      <Filter>libReator</Filter>
+    <ClInclude Include="..\Source\NETS\UServerAccepter.h">
+      <Filter>libReator\NETS</Filter>
     </ClInclude>
-    <ClInclude Include="..\Source\UdpServerAccepter.h">
-      <Filter>libReator</Filter>
+    <ClInclude Include="..\Source\NETS\LockFreeQueue.h">
+      <Filter>libReator\NETS</Filter>
     </ClInclude>
-    <ClInclude Include="..\Source\UdpSocketXO.h">
-      <Filter>libReator</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Demo\UdpClient.h">
+    <ClInclude Include="ClientDemo.h">
       <Filter>Demo</Filter>
     </ClInclude>
-    <ClInclude Include="..\Demo\UdpServer.h">
+    <ClInclude Include="ServerDemo.h">
       <Filter>Demo</Filter>
     </ClInclude>
-    <ClInclude Include="..\Source\SvcHandler.h">
-      <Filter>libReator</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Source\UdpClientConnector.h">
-      <Filter>libReator</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Source\DataHandler.h">
-      <Filter>libReator</Filter>
-    </ClInclude>
-    <ClInclude Include="UdpServerDataHandler.h">
+    <ClInclude Include="UServerDataHandler.h">
       <Filter>Demo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\IF\Observer.h">
+      <Filter>libReator\IF</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\IF\Subject.h">
+      <Filter>libReator\IF</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\Common\Common.h">
+      <Filter>libReator\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\Common\Types.h">
+      <Filter>libReator\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\Common\Consts.h">
+      <Filter>libReator\Common</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\Source\ClientConnector.cpp">
-      <Filter>libReator</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Source\EventXO.cpp">
-      <Filter>libReator</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Source\Helper.cpp">
-      <Filter>libReator</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Source\LockFreeQueues.cpp">
-      <Filter>libReator</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Source\Log.cpp">
-      <Filter>libReator</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Source\LogUseBuffer.cpp">
-      <Filter>libReator</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Source\MutexXO.cpp">
-      <Filter>libReator</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Source\ObserverX.cpp">
-      <Filter>libReator</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Source\ServerAccepter.cpp">
-      <Filter>libReator</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Source\SocketXO.cpp">
-      <Filter>libReator</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Source\SubjectX.cpp">
-      <Filter>libReator</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Source\TcpSocketXO.cpp">
-      <Filter>libReator</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Source\ThreadX.cpp">
-      <Filter>libReator</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Source\UdpDataProcesser.cpp">
-      <Filter>libReator</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Source\UdpServerAccepter.cpp">
-      <Filter>libReator</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Source\UdpSocketXO.cpp">
-      <Filter>libReator</Filter>
-    </ClCompile>
     <ClCompile Include="..\Demo\libReactorDemo.cpp">
       <Filter>Demo</Filter>
     </ClCompile>
-    <ClCompile Include="..\Demo\UdpClient.cpp">
+    <ClCompile Include="..\Source\IOS\Log.cpp">
+      <Filter>libReator\IOS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\OSIS\EventXO.cpp">
+      <Filter>libReator\OSIS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\OSIS\MutexXO.cpp">
+      <Filter>libReator\OSIS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\OSIS\SocketXO.cpp">
+      <Filter>libReator\OSIS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\OSIS\TcpSocketXO.cpp">
+      <Filter>libReator\OSIS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\OSIS\ThreadX.cpp">
+      <Filter>libReator\OSIS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\OSIS\UdpSocketXO.cpp">
+      <Filter>libReator\OSIS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\NETS\BufferContainer.cpp">
+      <Filter>libReator\NETS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\NETS\ClientConnector.cpp">
+      <Filter>libReator\NETS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\NETS\ServerAccepter.cpp">
+      <Filter>libReator\NETS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\NETS\SvcHandler.cpp">
+      <Filter>libReator\NETS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\IF\DataHandler.cpp">
+      <Filter>libReator\IF</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\IOS\BufferLogger.cpp">
+      <Filter>libReator\IOS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\NETS\UClientConnector.cpp">
+      <Filter>libReator\NETS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\NETS\UDataProcesser.cpp">
+      <Filter>libReator\NETS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\NETS\UServerAccepter.cpp">
+      <Filter>libReator\NETS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\NETS\LockFreeQueue.cpp">
+      <Filter>libReator\NETS</Filter>
+    </ClCompile>
+    <ClCompile Include="ClientDemo.cpp">
       <Filter>Demo</Filter>
     </ClCompile>
-    <ClCompile Include="..\Demo\UdpServer.cpp">
+    <ClCompile Include="ServerDemo.cpp">
       <Filter>Demo</Filter>
     </ClCompile>
-    <ClCompile Include="..\Source\SvcHandler.cpp">
-      <Filter>libReator</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Source\UdpClientConnector.cpp">
-      <Filter>libReator</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Source\DataHandler.cpp">
-      <Filter>libReator</Filter>
-    </ClCompile>
-    <ClCompile Include="UdpServerDataHandler.cpp">
+    <ClCompile Include="UServerDataHandler.cpp">
       <Filter>Demo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\IF\Observer.cpp">
+      <Filter>libReator\IF</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\IF\Subject.cpp">
+      <Filter>libReator\IF</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

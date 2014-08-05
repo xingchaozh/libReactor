@@ -8,19 +8,19 @@ using namespace std;
 #if LOCAL_HOST_ADDRESS_TEST
 #define CLIENT_IP "127.0.0.1" //Local location
 #else
-#define CLIENT_IP "10.50.50.5" //Local location
+#define CLIENT_IP "192.168.0.100" //Local location
 #endif
-#define CLIENT_PORT 51008 //Local Listen port
+#define CLIENT_PORT 6012 //Local Listen port
 
 #if LOCAL_HOST_ADDRESS_TEST
 #define SERVER_IP "127.0.0.1" //Local location
 #else
-#define SERVER_IP "10.50.50.1" //Local location
+#define SERVER_IP "192.168.0.32" //Local location
 #endif
-#define SERVER_PORT 52008 //Server Listen port
+#define SERVER_PORT 8012 //Server Listen port
 
-#include "UdpServer.h"
-#include "UdpClient.h"
+#include "ServerDemo.h"
+#include "ClientDemo.h"
 
 int StartApp();
 
@@ -46,14 +46,14 @@ int StartApp()
 		case 1:
 			{
 				printf("The Udp Server Demo:\n");
-				UdpServer Server;
+				ServerDemo Server;
 				Server.Start(SERVER_IP,SERVER_PORT,CLIENT_PORT);
 				break;
 			}
 		case 2:
 			{
 				printf("The Udp Client Demo:\n");
-				UdpClient client;
+				ClientDemo client;
 				client.Start(CLIENT_IP,CLIENT_PORT,SERVER_IP,SERVER_PORT);
 				break;
 			}
