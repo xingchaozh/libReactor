@@ -1,62 +1,45 @@
 #include "ServerDemo.h"
 
-#include "UServerDataHandler.h"
-
-ServerDemo::ServerDemo(void):serverAccepter_(NULL)
+ServerDemo::ServerDemo(void)
 {
 }
 
 ServerDemo::~ServerDemo(void)
 {
-	if(NULL != serverAccepter_)
-	{
-		serverAccepter_->SetEnable(false);
-		serverAccepter_->WaitForExit();
-	}
-
-	vector<UDataProcesser *>::iterator i = vecDataProcesser_.begin();
-	for (; i != vecDataProcesser_.end(); i++)
-	{
-		(*i)->SetEnable(false);
-		(*i)->WaitForExit();
-	}
 }
 
-void ServerDemo::Start(string serverHost,  //Local host location
-					  int serverPort, int remoteClientPort)     //Local host port
+void ServerDemo::Start(string localServerHost, int localServerPort)
 {
-	
-	SocketXO::StartupService();
-	Sleep(1000);
+	ReflectionRegister<UdpServerDataHandler>::Register();
+	Execute(localServerHost,localServerPort, typeid(UdpServerDataHandler).name());
+}
 
-	//Create the communication server thread
-	serverAccepter_ = new UServerAccepter();
-	serverAccepter_->Initialize(serverHost,serverPort);
-	serverAccepter_->SetTimeOut(100);
-	serverAccepter_->Start();
 
-	//create the data process thread list
-	const int NUM_DATA_PROCESSER = 2;
-	for (int i = 0; i < NUM_DATA_PROCESSER; i++)
+//////////////////////////////////////////////////////////////////////////
+//UdpServerDataHandler
+UdpServerDataHandler::UdpServerDataHandler()
+{
+	udpServerAccepter_ = NULL;
+}
+
+UdpServerDataHandler::~UdpServerDataHandler(void)
+{
+}
+
+void UdpServerDataHandler::DataHanle(UdpBuffer & udpBuffer)
+{
+	//Process
+	printf("Rev form %s:%d, length = %d\n",udpBuffer.sockAddr.strAddress,udpBuffer.sockAddr.port,udpBuffer.buffer.length);
+	string strAck = "Ack from Server";
+
+	//Send Result back to Client.
+	UdpBuffer udpBufferSend;
+	memset(&udpBufferSend,0,sizeof(UdpBuffer));
+	memcpy(udpBufferSend.buffer.message,strAck.c_str(),strAck.length());
+	udpBufferSend.buffer.length = strAck.length();
+	udpBufferSend.sockAddr = SocketXO::GetSockAddr(udpBuffer.sockAddr.strAddress,udpBuffer.sockAddr.port);
+	if(NULL != udpServerAccepter_)
 	{
-		UDataProcesser * dataProcesser = new UDataProcesser(serverAccepter_);
-		//create the data handler for dataProcesser
-		UdpServerDataHandler * udpServerDataHandler = new UdpServerDataHandler(serverAccepter_);
-		dataProcesser->SetDataHanler(udpServerDataHandler);
-		dataProcesser->Start();
-
-		vecDataProcesser_.push_back(dataProcesser);
+		udpServerAccepter_->HandleOutput(udpBufferSend);
 	}
-
-	
-	//exit process
-	serverAccepter_->WaitForExit();
-	vector<UDataProcesser *>::iterator i = vecDataProcesser_.begin();
-	for (; i != vecDataProcesser_.end(); i++)
-	{
-		(*i)->SetEnable(false);
-		(*i)->WaitForExit();
-	}
-
-	SocketXO::StopService();
 }

@@ -30,6 +30,7 @@ ThreadX::~ThreadX()
 
 void ThreadX::Start(bool bSuspend)
 {
+	printf("One thread is created!\n");
 	handle_ = ThreadX::BeginThreadXDefault(this,&threadId_, bSuspend);
 }
 

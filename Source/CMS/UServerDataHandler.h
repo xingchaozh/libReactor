@@ -4,7 +4,7 @@
 *                                     COMMON TASK AND SEMAPHORE
 * 
 * Project       : libReactor
-* Filename      : BufferLogger.h
+* Filename      : UServerDataHandler.h
 * Version       : V1.0
 * Programmer(s) : xclyfe@gmail.com
 *********************************************************************************************************
@@ -15,29 +15,33 @@
 *********************************************************************************************************
 */
 #pragma once
-#include "log.h"
+#include "..\ifs\datahandler.h"
+#include "UServerAccepter.h"
 
-class BufferLogger :
-	public Log
+class UServerDataHandler :
+	public DataHandler
 {
 public:
-	BufferLogger(void);
-	virtual ~BufferLogger(void);
+	UServerDataHandler(void);
+	virtual ~UServerDataHandler(void);
+public :
+	virtual void DataHanle(UdpBuffer & udpBuffer) = 0;
 
-public:
-	bool Open(string sFileName, bool bWithATime = false);
-	void Write(const char* buf, unsigned int size);
-	void WriteLine();
-	void Write(string str);
-	void WirteImmediately(const char* buf, unsigned int size);
+	void SetServerAccepter(UServerAccepter * udpServerAccepter)
+	{
+		udpServerAccepter_ = udpServerAccepter;
+	}
 
-private:
-	void Flush();
-
-private:
-	char buffer_[BUFFER_LOGGER_BUFFER_SIZE];
-	int current_;
-
-	string fileName_;
-	bool splitFile_;
+	bool HandleOutput(UdpBuffer & udpBuffer)
+	{
+		bool result = false;
+		if (NULL != udpServerAccepter_)
+		{
+			result = udpServerAccepter_->HandleOutput(udpBuffer);
+		}
+		return result;
+	}
+protected:
+	UServerAccepter * udpServerAccepter_;
 };
+

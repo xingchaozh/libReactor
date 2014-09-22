@@ -4,7 +4,7 @@
 *                                     COMMON TASK AND SEMAPHORE
 * 
 * Project       : libReactor
-* Filename      : BufferLogger.h
+* Filename      : ReflectionX.cpp
 * Version       : V1.0
 * Programmer(s) : xclyfe@gmail.com
 *********************************************************************************************************
@@ -14,30 +14,27 @@
 *                                        INCLUDE FILES
 *********************************************************************************************************
 */
-#pragma once
-#include "log.h"
+#include "ReflectionX.h"
 
-class BufferLogger :
-	public Log
+std::map<std::string, CreateFuntion> ReflectionClassFactory::m_clsMap;
+
+void* ReflectionClassFactory::GetClassByName(std::string name)
 {
-public:
-	BufferLogger(void);
-	virtual ~BufferLogger(void);
+	std::map<std::string,CreateFuntion>::const_iterator find;
+	find = m_clsMap.find(name);
+	if(find==m_clsMap.end())
+	{
+		return NULL;
+	}
+	else
+	{
+		return find->second();
+	}
+}
 
-public:
-	bool Open(string sFileName, bool bWithATime = false);
-	void Write(const char* buf, unsigned int size);
-	void WriteLine();
-	void Write(string str);
-	void WirteImmediately(const char* buf, unsigned int size);
+bool ReflectionClassFactory::RegistClass(std::string name,CreateFuntion method)
+{
+	m_clsMap.insert(std::make_pair(name,method));
+	return true;
+}
 
-private:
-	void Flush();
-
-private:
-	char buffer_[BUFFER_LOGGER_BUFFER_SIZE];
-	int current_;
-
-	string fileName_;
-	bool splitFile_;
-};

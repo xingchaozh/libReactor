@@ -1,19 +1,25 @@
 #pragma once
 
-#include "../Source/NETS/UServerAccepter.h"
-#include "../Source/NETS/UDataProcesser.h"
+#include "../Source/IFS/IFS.h"
+#include "../Source/IFS/ReflectionX.h"
 
-#include <vector>
-using namespace std;
-
-class ServerDemo
+class ServerDemo :
+	public UServerBase
 {
 public:
 	ServerDemo(void);
 	~ServerDemo(void);
 public:
-	void Start(string localServerHost, int localServerPort, int remoteClientPort);
-public:
-	UServerAccepter * serverAccepter_;
-	vector<UDataProcesser *> vecDataProcesser_;
+	void Start(string localServerHost, int localServerPort);
 };
+
+class UdpServerDataHandler :
+	public UServerDataHandler
+{
+public:
+	UdpServerDataHandler();
+	virtual ~UdpServerDataHandler(void);
+public:
+	void DataHanle(UdpBuffer & udpBuffer);
+};
+

@@ -4,7 +4,7 @@
 *                                     COMMON TASK AND SEMAPHORE
 * 
 * Project       : libReactor
-* Filename      : BufferLogger.h
+* Filename      : ConnectKeeper.h
 * Version       : V1.0
 * Programmer(s) : xclyfe@gmail.com
 *********************************************************************************************************
@@ -14,30 +14,35 @@
 *                                        INCLUDE FILES
 *********************************************************************************************************
 */
-#pragma once
-#include "log.h"
+#ifndef HSICONNECTKEEPER_H
+#define HSICONNECTKEEPER_H
 
-class BufferLogger :
-	public Log
+#include "../Common/Common.h"
+#include "../IFS/Observer.h"
+
+class ConnectKeeper:
+	public Observer
 {
 public:
-	BufferLogger(void);
-	virtual ~BufferLogger(void);
+	ConnectKeeper(UINT32 commLostTime_ = HSI_COMM_LOST_TIME);
+    virtual ~ConnectKeeper();
 
 public:
-	bool Open(string sFileName, bool bWithATime = false);
-	void Write(const char* buf, unsigned int size);
-	void WriteLine();
-	void Write(string str);
-	void WirteImmediately(const char* buf, unsigned int size);
+    void Execute();
 
-private:
-	void Flush();
+    void SetCommEstablished(bool commEstablished);
+    bool GetCommEstablished();
 
-private:
-	char buffer_[BUFFER_LOGGER_BUFFER_SIZE];
-	int current_;
-
-	string fileName_;
-	bool splitFile_;
+	void LeaveFreshCountReset();
+	virtual void Update(Subject * sub);
+protected:
+	UINT32 leaveFreshCount_;
+	UINT32 commLostTime_;
+    bool commEstablished_;
 };
+
+typedef ConnectKeeper HSIConnectKeeper;
+typedef ConnectKeeper HSRConnectKeeper;
+
+#endif // HSICONNECTKEEPER_H
+

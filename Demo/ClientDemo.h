@@ -1,26 +1,29 @@
 #pragma once
 
-#define _WINSOCKAPI_
-#include <winsock2.h>
+#include "../Source/IFS/IFS.h"
+#include "../Source/IFS/ReflectionX.h"
 
-#include "../Source/NETS/UClientConnector.h"
-
-#include <string>
-using namespace std;
-
-class ClientDemo
+class ClientDemo :
+	public UClientBase
 {
 public:
 	ClientDemo(void);
-	~ClientDemo(void);
+	virtual ~ClientDemo(void);
 public:
 	void Start(string localClientHost,
 		int localClientPort,
 		string remoteServerHost,
 		int remoteServerPort);
-public:
-	SOCKET clientSocket_;
-protected:
-	UClientConnector * udpClientConnector_;
 };
+
+class UdpClientDataHandler :
+	public UClientDataHandler
+{
+public:
+	UdpClientDataHandler();
+	virtual ~UdpClientDataHandler(void);
+public:
+	void DataHanle(UdpBuffer & udpBuffer);
+};
+
 

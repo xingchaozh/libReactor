@@ -4,7 +4,7 @@
 *                                     COMMON TASK AND SEMAPHORE
 * 
 * Project       : libReactor
-* Filename      : BufferLogger.h
+* Filename      : ClientConnector.h
 * Version       : V1.0
 * Programmer(s) : xclyfe@gmail.com
 *********************************************************************************************************
@@ -15,29 +15,32 @@
 *********************************************************************************************************
 */
 #pragma once
-#include "log.h"
 
-class BufferLogger :
-	public Log
+#include "SvcHandler.h"
+
+class ClientConnector :
+	public SvcHandler
 {
 public:
-	BufferLogger(void);
-	virtual ~BufferLogger(void);
-
+	ClientConnector(SokectType socketType = SOCKET_TYPE_UDP, long timeOut = 100);
+	virtual ~ClientConnector(void);
 public:
-	bool Open(string sFileName, bool bWithATime = false);
-	void Write(const char* buf, unsigned int size);
-	void WriteLine();
-	void Write(string str);
-	void WirteImmediately(const char* buf, unsigned int size);
+	int Initialize(string localClientHost, int localClientPort);
+	void SetEnable(bool bEnabled);
 
+	void SetTimeOut(long timeOut);
+protected:
+	virtual int ProcessOutput() = 0;
+	
+	virtual int HandleInput() = 0;
 private:
-	void Flush();
+	virtual void ThreadEntryPoint();
+	void ProcessInput();
 
-private:
-	char buffer_[BUFFER_LOGGER_BUFFER_SIZE];
-	int current_;
-
-	string fileName_;
-	bool splitFile_;
+protected:
+	SokectType socketType_;
+	SocketXO * socket_;
+	bool enabled_;
+	long timeOut_;//milliseconds
 };
+

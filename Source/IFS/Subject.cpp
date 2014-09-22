@@ -4,7 +4,7 @@
 *                                     COMMON TASK AND SEMAPHORE
 * 
 * Project       : libReactor
-* Filename      : BufferLogger.h
+* Filename      : SubjectX.cpp
 * Version       : V1.0
 * Programmer(s) : xclyfe@gmail.com
 *********************************************************************************************************
@@ -14,30 +14,33 @@
 *                                        INCLUDE FILES
 *********************************************************************************************************
 */
-#pragma once
-#include "log.h"
+#include "Subject.h"
+#include "Observer.h"
 
-class BufferLogger :
-	public Log
+Subject::Subject(void)
 {
-public:
-	BufferLogger(void);
-	virtual ~BufferLogger(void);
+	_obvs = new list<Observer *>;
+}
 
-public:
-	bool Open(string sFileName, bool bWithATime = false);
-	void Write(const char* buf, unsigned int size);
-	void WriteLine();
-	void Write(string str);
-	void WirteImmediately(const char* buf, unsigned int size);
 
-private:
-	void Flush();
+Subject::~Subject(void)
+{
+}
 
-private:
-	char buffer_[BUFFER_LOGGER_BUFFER_SIZE];
-	int current_;
+void Subject::Attach(Observer * obv)
+{
+	_obvs->push_back(obv);
+}
 
-	string fileName_;
-	bool splitFile_;
-};
+void Subject::Detach(Observer * obv)
+{
+	_obvs->remove(obv);
+}
+
+void Subject::Notify()
+{
+	for (list<Observer*>::iterator it = _obvs->begin(); it != _obvs->end(); it++)
+	{
+		(*it)->Update(this);
+	}
+}

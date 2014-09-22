@@ -62,8 +62,7 @@ string Log::GetCurTimeStr()
 {
 	time_t tNowTime;
 	time(&tNowTime);
-	tm* tLocalTime = NULL;//tm* tLocalTime = localtime(&tNowTime);
-	localtime_s(tLocalTime,&tNowTime);
+	tm* tLocalTime = localtime(&tNowTime);
 
 	string strDateTime = ValueToStr(tLocalTime->tm_year+1900) + "-" +
 		ValueToStr(tLocalTime->tm_mon+1)     + "-" +

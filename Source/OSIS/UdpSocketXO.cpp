@@ -35,7 +35,7 @@ int UdpSocketXO::RecvFrom(UdpBuffer & udpBuffer)
 	return RecvFrom(udpBuffer.buffer.message,MAX_DGRAM_BUFFER_SIZE,udpBuffer.sockAddr);
 }
 
-int UdpSocketXO::RecvFrom(char * ptr, int len, SocketAddr & socketAddr)
+int UdpSocketXO::RecvFrom(UCHAR8 * ptr, int len, SocketAddr & socketAddr)
 {
 	struct sockaddr_in addr;
 	int len_addr = sizeof(addr);
@@ -45,9 +45,9 @@ int UdpSocketXO::RecvFrom(char * ptr, int len, SocketAddr & socketAddr)
 	return ret;
 }
 
-int UdpSocketXO::RecvFrom(char * ptr, int len, sockaddr * from, int * fromlen)
+int UdpSocketXO::RecvFrom(UCHAR8 * ptr, int len, sockaddr * from, int * fromlen)
 {
-	return recvfrom(socket_,ptr,len,0,from,fromlen);
+	return recvfrom(socket_,(char*)ptr,len,0,from,fromlen);
 }
 
 int UdpSocketXO::SendTo(UdpBuffer & udpBuffer)
@@ -55,15 +55,15 @@ int UdpSocketXO::SendTo(UdpBuffer & udpBuffer)
 	return SendTo(udpBuffer.buffer.message,udpBuffer.buffer.length,udpBuffer.sockAddr);
 }
 
-int UdpSocketXO::SendTo(char * ptr, int len, SocketAddr & socketAddr)
+int UdpSocketXO::SendTo(UCHAR8 * ptr, int len, SocketAddr & socketAddr)
 {
 	sockaddr_in to = GetStdSockAddr(socketAddr);
 	int tolen = sizeof(to);
 	return SendTo(ptr,len,(sockaddr *)&to,tolen);
 }
 
-int UdpSocketXO::SendTo(char * ptr, int len, sockaddr * to, int tolen)
+int UdpSocketXO::SendTo(UCHAR8 * ptr, int len, sockaddr * to, int tolen)
 {
-	return sendto(socket_,ptr,len,0,to,tolen);
+	return sendto(socket_,(char*)ptr,len,0,to,tolen);
 }
 

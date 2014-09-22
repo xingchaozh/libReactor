@@ -4,7 +4,7 @@
 *                                     COMMON TASK AND SEMAPHORE
 * 
 * Project       : libReactor
-* Filename      : BufferLogger.h
+* Filename      : UClientBase.h
 * Version       : V1.0
 * Programmer(s) : xclyfe@gmail.com
 *********************************************************************************************************
@@ -15,29 +15,32 @@
 *********************************************************************************************************
 */
 #pragma once
-#include "log.h"
 
-class BufferLogger :
-	public Log
+#include "UClientConnector.h"
+#include "UClientDataHandler.h"
+
+#include <vector>
+using namespace std;
+
+class UClientBase
 {
 public:
-	BufferLogger(void);
-	virtual ~BufferLogger(void);
-
+	UClientBase(void);
+	virtual ~UClientBase(void);
 public:
-	bool Open(string sFileName, bool bWithATime = false);
-	void Write(const char* buf, unsigned int size);
-	void WriteLine();
-	void Write(string str);
-	void WirteImmediately(const char* buf, unsigned int size);
+	void Execute(string localClientHost,
+		int localClientPort,
+		string dataHandlerClassName);
+	
+	void HandleOutput(UdpBuffer & bufferSend);
+	SocketAddr GetServerAddress(UINT32 index);
+	bool AppendServerAddress(SocketAddr & addr);
 
-private:
-	void Flush();
-
-private:
-	char buffer_[BUFFER_LOGGER_BUFFER_SIZE];
-	int current_;
-
-	string fileName_;
-	bool splitFile_;
+	void WartForExit();
+	void Destroy();
+protected:
+	UClientConnector * udpClientConnector_;
+	UClientDataHandler * dataHandler_;
+	vector<SocketAddr> vecSocketAddrs_;
 };
+

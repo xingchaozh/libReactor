@@ -4,7 +4,7 @@
 *                                     COMMON TASK AND SEMAPHORE
 * 
 * Project       : libReactor
-* Filename      : BufferLogger.h
+* Filename      : UdpClientConnector.h
 * Version       : V1.0
 * Programmer(s) : xclyfe@gmail.com
 *********************************************************************************************************
@@ -15,29 +15,28 @@
 *********************************************************************************************************
 */
 #pragma once
-#include "log.h"
+#include "ClientConnector.h"
 
-class BufferLogger :
-	public Log
+#include "LockFreeQueue.h"
+#include "../IFS/DataHandler.h"
+#include "BufferContainer.h"
+
+class UClientConnector :
+	public ClientConnector
 {
 public:
-	BufferLogger(void);
-	virtual ~BufferLogger(void);
-
-public:
-	bool Open(string sFileName, bool bWithATime = false);
-	void Write(const char* buf, unsigned int size);
-	void WriteLine();
-	void Write(string str);
-	void WirteImmediately(const char* buf, unsigned int size);
-
-private:
-	void Flush();
-
-private:
-	char buffer_[BUFFER_LOGGER_BUFFER_SIZE];
-	int current_;
-
-	string fileName_;
-	bool splitFile_;
+	UClientConnector(void);
+	~UClientConnector(void);
+	void SetDataHanler(DataHandler * dataHandler)
+	{
+		dataHandler_ = dataHandler;
+	}
+	bool HandleOutput(UdpBuffer & bufferSend);
+protected:
+	virtual int ProcessOutput();
+	virtual int HandleInput();
+	void ProcessIncomeData(UdpBuffer & bufferRev);
+protected:
+	BufferContainer * queueOutput_;
+	DataHandler * dataHandler_;
 };

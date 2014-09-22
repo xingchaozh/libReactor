@@ -4,7 +4,7 @@
 *                                     COMMON TASK AND SEMAPHORE
 * 
 * Project       : libReactor
-* Filename      : BufferLogger.h
+* Filename      : DataSource.h
 * Version       : V1.0
 * Programmer(s) : xclyfe@gmail.com
 *********************************************************************************************************
@@ -14,30 +14,17 @@
 *                                        INCLUDE FILES
 *********************************************************************************************************
 */
-#pragma once
-#include "log.h"
+#ifndef DATASOURCE_H
+#define DATASOURCE_H
 
-class BufferLogger :
-	public Log
+#include "../Common/Common.h"
+
+class DataSource
 {
 public:
-	BufferLogger(void);
-	virtual ~BufferLogger(void);
-
+    DataSource();
 public:
-	bool Open(string sFileName, bool bWithATime = false);
-	void Write(const char* buf, unsigned int size);
-	void WriteLine();
-	void Write(string str);
-	void WirteImmediately(const char* buf, unsigned int size);
-
-private:
-	void Flush();
-
-private:
-	char buffer_[BUFFER_LOGGER_BUFFER_SIZE];
-	int current_;
-
-	string fileName_;
-	bool splitFile_;
+    virtual bool RetrieveData(void * data) = 0;
 };
+
+#endif // DATASOURCE_H

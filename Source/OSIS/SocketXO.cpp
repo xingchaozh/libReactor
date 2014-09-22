@@ -16,6 +16,8 @@
 */
 #include "SocketXO.h"
 
+bool SocketXO::startupService_ = false;
+
 SocketXO::SocketXO(void)
 {
 }
@@ -27,17 +29,25 @@ SocketXO::~SocketXO(void)
 
 void SocketXO::StartupService()
 {
-	WSADATA wsa;
-	if(WSAStartup(MAKEWORD(2, 2),&wsa) != 0)
+	if(!startupService_)
 	{
-		printf("WSAStartup() failed!\n");
-		return;
+		WSADATA wsa;
+		if(WSAStartup(MAKEWORD(2, 2),&wsa) != 0)
+		{
+			printf("WSAStartup() failed!\n");
+			return;
+		}
+		startupService_ = true;
 	}
 }
 
 void SocketXO::StopService()
 {
-	WSACleanup();
+	if(startupService_)
+	{
+		WSACleanup();
+		startupService_ = false;
+	}
 }
 
 sockaddr_in SocketXO::GetStdSockAddr(string localServerHost,int localServerPort)
@@ -119,7 +129,7 @@ void SocketXO::Create(int af, int type, int protocol)
 int SocketXO::Bind(sockaddr * addr)
 {
 	////bind socket to the host
-	//printf("1\n");
+	printf("SocketXO::Bind:Start\n");
 	int ret = bind(socket_,addr,sizeof(sockaddr));
 	//printf("2\n");
 	if(SOCKET_ERROR == ret)
@@ -127,6 +137,7 @@ int SocketXO::Bind(sockaddr * addr)
 		printf("bind() faild! code:%d\n", WSAGetLastError());
 		Close();
 	}
+	printf("SocketXO::Bind:End\n");
 	return ret;
 }
 

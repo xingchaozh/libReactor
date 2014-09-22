@@ -4,7 +4,7 @@
 *                                     COMMON TASK AND SEMAPHORE
 * 
 * Project       : libReactor
-* Filename      : BufferLogger.h
+* Filename      : UdpDataProcesser.h
 * Version       : V1.0
 * Programmer(s) : xclyfe@gmail.com
 *********************************************************************************************************
@@ -15,29 +15,33 @@
 *********************************************************************************************************
 */
 #pragma once
-#include "log.h"
+#include "../IFS/IFSInternal.h"
+#include "../IFS/DataHandler.h"
+#include "../IFS/Observer.h"
 
-class BufferLogger :
-	public Log
+#include "UBufferContainer.h"
+
+class UDataProcesser :
+	public Observer, public ThreadX
 {
 public:
-	BufferLogger(void);
-	virtual ~BufferLogger(void);
+	UDataProcesser(UBufferContainer * bufferContainer);
+	virtual ~UDataProcesser();
+	void SetEnable(bool bEnabled);
+	void SetDataHanler(DataHandler * dataHandler)
+	{
+		dataHandler_ = dataHandler;
+	}
+protected:
 
-public:
-	bool Open(string sFileName, bool bWithATime = false);
-	void Write(const char* buf, unsigned int size);
-	void WriteLine();
-	void Write(string str);
-	void WirteImmediately(const char* buf, unsigned int size);
+	void ProcessData(UdpBuffer & bufferRev);
+	virtual void ThreadEntryPoint();
+	virtual void Update(Subject * sub);
 
 private:
-	void Flush();
-
-private:
-	char buffer_[BUFFER_LOGGER_BUFFER_SIZE];
-	int current_;
-
-	string fileName_;
-	bool splitFile_;
+	UBufferContainer * bufferContainer_;
+	EventXO * threadEventNewData_;
+	bool enabled_;
+	DataHandler * dataHandler_;
 };
+

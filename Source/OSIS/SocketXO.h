@@ -59,5 +59,6 @@ protected:
 	int Select(int nfds, fd_set * readfds,fd_set * writefds,fd_set * exceptfds,timeval * timeout);
 protected:
 	SOCKET socket_;
+	static bool startupService_;
 };
 

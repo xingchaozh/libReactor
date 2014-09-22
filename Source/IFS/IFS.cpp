@@ -4,7 +4,7 @@
 *                                     COMMON TASK AND SEMAPHORE
 * 
 * Project       : libReactor
-* Filename      : BufferLogger.h
+* Filename      : IFS.cpp
 * Version       : V1.0
 * Programmer(s) : xclyfe@gmail.com
 *********************************************************************************************************
@@ -14,30 +14,21 @@
 *                                        INCLUDE FILES
 *********************************************************************************************************
 */
-#pragma once
-#include "log.h"
+#include "IFS.h"
 
-class BufferLogger :
-	public Log
+#ifdef WIN32
+#include <windows.h>
+#else
+#include <pthread.h>
+#endif
+
+unsigned int GetCurrentThreadId_X()
 {
-public:
-	BufferLogger(void);
-	virtual ~BufferLogger(void);
+#ifdef WIN32
+	return::GetCurrentThreadId();
+#else
+	returnthread_self();
+#endif
+}
 
-public:
-	bool Open(string sFileName, bool bWithATime = false);
-	void Write(const char* buf, unsigned int size);
-	void WriteLine();
-	void Write(string str);
-	void WirteImmediately(const char* buf, unsigned int size);
 
-private:
-	void Flush();
-
-private:
-	char buffer_[BUFFER_LOGGER_BUFFER_SIZE];
-	int current_;
-
-	string fileName_;
-	bool splitFile_;
-};

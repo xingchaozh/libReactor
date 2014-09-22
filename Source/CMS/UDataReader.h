@@ -4,7 +4,7 @@
 *                                     COMMON TASK AND SEMAPHORE
 * 
 * Project       : libReactor
-* Filename      : BufferLogger.h
+* Filename      : UDataReader.h
 * Version       : V1.0
 * Programmer(s) : xclyfe@gmail.com
 *********************************************************************************************************
@@ -15,29 +15,29 @@
 *********************************************************************************************************
 */
 #pragma once
-#include "log.h"
 
-class BufferLogger :
-	public Log
+#include "../IFS/IFSInternal.h"
+#include "../IFS/Observer.h"
+
+#include "UServerAccepter.h"
+
+class UDataReader :
+	public Observer, public ThreadX
 {
 public:
-	BufferLogger(void);
-	virtual ~BufferLogger(void);
-
-public:
-	bool Open(string sFileName, bool bWithATime = false);
-	void Write(const char* buf, unsigned int size);
-	void WriteLine();
-	void Write(string str);
-	void WirteImmediately(const char* buf, unsigned int size);
-
+	UDataReader(UServerAccepter * udpServerAccepter);
+	virtual ~UDataReader(void);
+	void Update(Subject * sub);
+	virtual void ThreadEntryPoint();
+	int Read();
+	void SetBufferListRev(BufferContainer * bufferListRev);
+	void SetEnable(bool bEnabled);
+protected:
+	BufferContainer * bufferListRev_;
+	UdpBuffer bufferRev_;
 private:
-	void Flush();
-
-private:
-	char buffer_[BUFFER_LOGGER_BUFFER_SIZE];
-	int current_;
-
-	string fileName_;
-	bool splitFile_;
+	UServerAccepter * udpServerAccepter_;
+	EventXO * threadEventNewData_;
+	bool enabled_;
 };
+

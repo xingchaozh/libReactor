@@ -29,8 +29,11 @@ public:
 	int SendTo(UdpBuffer & udpBuffer);
 protected:
 	void Create();
-	int RecvFrom(char * ptr, int len, sockaddr * from, int * fromlen);
-	int RecvFrom(char * ptr, int len, SocketAddr & socketAddr);
-	int SendTo(char * ptr, int len, sockaddr * to, int tolen);
-	int SendTo(char * ptr, int len, SocketAddr & socketAddr);
+	int RecvFrom(UCHAR8 * ptr, int len, sockaddr * from, int * fromlen);
+	int RecvFrom(UCHAR8 * ptr, int len, SocketAddr & socketAddr);
+	int SendTo(UCHAR8 * ptr, int len, sockaddr * to, int tolen);
+	int SendTo(UCHAR8 * ptr, int len, SocketAddr & socketAddr);
 };
+
+
+

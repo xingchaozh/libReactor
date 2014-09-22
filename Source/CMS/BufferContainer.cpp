@@ -4,7 +4,7 @@
 *                                     COMMON TASK AND SEMAPHORE
 * 
 * Project       : libReactor
-* Filename      : BufferLogger.h
+* Filename      : BufferContainer.cpp
 * Version       : V1.0
 * Programmer(s) : xclyfe@gmail.com
 *********************************************************************************************************
@@ -14,30 +14,29 @@
 *                                        INCLUDE FILES
 *********************************************************************************************************
 */
-#pragma once
-#include "log.h"
+#include "buffercontainer.h"
 
-class BufferLogger :
-	public Log
+BufferContainer::BufferContainer(UINT16 buffer_size)
 {
-public:
-	BufferLogger(void);
-	virtual ~BufferLogger(void);
+	queue_ = new LockFreeQueue<UdpBuffer>(buffer_size);
+}
 
-public:
-	bool Open(string sFileName, bool bWithATime = false);
-	void Write(const char* buf, unsigned int size);
-	void WriteLine();
-	void Write(string str);
-	void WirteImmediately(const char* buf, unsigned int size);
+BufferContainer::~BufferContainer()
+{
+	delete queue_;
+}
 
-private:
-	void Flush();
+bool BufferContainer::EnQueue(const UdpBuffer & udpBuffer)
+{
+	return queue_->EnQueue(udpBuffer);
+}
 
-private:
-	char buffer_[BUFFER_LOGGER_BUFFER_SIZE];
-	int current_;
+bool BufferContainer::DeQueue(UdpBuffer * udpBuffer)
+{
+	return queue_->DeQueue(udpBuffer);
+}
 
-	string fileName_;
-	bool splitFile_;
-};
+bool BufferContainer::IsEmpty()
+{
+	return queue_->IsEmpty();
+}

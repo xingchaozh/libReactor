@@ -13,7 +13,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{DA529F2B-B195-444C-9CFB-FEE8CB25FDE9}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>libReactor</RootNamespace>
+    <RootNamespace>ES</RootNamespace>
     <ProjectName>libReactor</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -42,11 +42,13 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>..\..\Build\libReactorDebug</OutDir>
-    <IntDir>..\..\Build\libReactorDebug</IntDir>
+    <OutDir>..\Build\Debug\</OutDir>
+    <IntDir>..\Build\Debug\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
+    <OutDir>..\Build\Release\</OutDir>
+    <IntDir>..\Build\Release\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -81,57 +83,83 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\Source\CMS\BlockingQueue.h" />
+    <ClInclude Include="..\Source\CMS\BufferContainer.h" />
+    <ClInclude Include="..\Source\CMS\ClientConnector.h" />
+    <ClInclude Include="..\Source\CMS\connectkeeper.h" />
+    <ClInclude Include="..\Source\CMS\LockFreeQueue.h" />
+    <ClInclude Include="..\Source\CMS\ServerAccepter.h" />
+    <ClInclude Include="..\Source\CMS\SvcHandler.h" />
+    <ClInclude Include="..\Source\CMS\UBufferContainer.h" />
+    <ClInclude Include="..\Source\CMS\UClientBase.h" />
+    <ClInclude Include="..\Source\CMS\UClientConnector.h" />
+    <ClInclude Include="..\Source\CMS\UClientDataHandler.h" />
+    <ClInclude Include="..\Source\CMS\UServerDataHandler.h" />
+    <ClInclude Include="..\Source\CMS\UDataProcesser.h" />
+    <ClInclude Include="..\Source\CMS\UDataReader.h" />
+    <ClInclude Include="..\Source\CMS\UServerAccepter.h" />
+    <ClInclude Include="..\Source\CMS\UServerBase.h" />
+    <ClInclude Include="..\Source\EXPS\ExceptionRaise.h" />
+    <ClInclude Include="..\Source\EXPS\FaultRaise.h" />
+    <ClInclude Include="..\Source\IFS\DataHandler.h" />
+    <ClInclude Include="..\Source\IFS\datasource.h" />
+    <ClInclude Include="..\Source\IFS\IFS.h" />
+    <ClInclude Include="..\Source\IFS\IFSInternal.h" />
+    <ClInclude Include="..\Source\IFS\Observer.h" />
+    <ClInclude Include="..\Source\IFS\ReflectionX.h" />
+    <ClInclude Include="..\Source\IFS\Subject.h" />
+    <ClInclude Include="..\Source\OSIS\MessageTimer.h" />
+    <ClInclude Include="..\Source\OSIS\MessageTimerDefine.h" />
     <ClInclude Include="ClientDemo.h" />
     <ClInclude Include="ServerDemo.h" />
     <ClInclude Include="..\Source\Common\Common.h" />
     <ClInclude Include="..\Source\Common\Consts.h" />
     <ClInclude Include="..\Source\Common\Types.h" />
-    <ClInclude Include="..\Source\IF\DataHandler.h" />
-    <ClInclude Include="..\Source\IF\IFS.h" />
-    <ClInclude Include="..\Source\IF\Observer.h" />
-    <ClInclude Include="..\Source\IF\Subject.h" />
     <ClInclude Include="..\Source\IOS\Log.h" />
     <ClInclude Include="..\Source\IOS\BufferLogger.h" />
-    <ClInclude Include="..\Source\NETS\BufferContainer.h" />
-    <ClInclude Include="..\Source\NETS\ClientConnector.h" />
-    <ClInclude Include="..\Source\NETS\LockFreeQueue.h" />
-    <ClInclude Include="..\Source\NETS\ServerAccepter.h" />
-    <ClInclude Include="..\Source\NETS\SvcHandler.h" />
-    <ClInclude Include="..\Source\NETS\UClientConnector.h" />
-    <ClInclude Include="..\Source\NETS\UDataProcesser.h" />
-    <ClInclude Include="..\Source\NETS\UServerAccepter.h" />
     <ClInclude Include="..\Source\OSIS\EventXO.h" />
     <ClInclude Include="..\Source\OSIS\MutexXO.h" />
     <ClInclude Include="..\Source\OSIS\SocketXO.h" />
     <ClInclude Include="..\Source\OSIS\TcpSocketXO.h" />
     <ClInclude Include="..\Source\OSIS\ThreadX.h" />
     <ClInclude Include="..\Source\OSIS\UdpSocketXO.h" />
-    <ClInclude Include="UServerDataHandler.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\Demo\libReactorDemo.cpp" />
+    <ClCompile Include="..\Source\CMS\BlockingQueue.cpp" />
+    <ClCompile Include="..\Source\CMS\BufferContainer.cpp" />
+    <ClCompile Include="..\Source\CMS\ClientConnector.cpp" />
+    <ClCompile Include="..\Source\CMS\connectkeeper.cpp" />
+    <ClCompile Include="..\Source\CMS\LockFreeQueue.cpp" />
+    <ClCompile Include="..\Source\CMS\ServerAccepter.cpp" />
+    <ClCompile Include="..\Source\CMS\SvcHandler.cpp" />
+    <ClCompile Include="..\Source\CMS\UBufferContainer.cpp" />
+    <ClCompile Include="..\Source\CMS\UClientBase.cpp" />
+    <ClCompile Include="..\Source\CMS\UClientConnector.cpp" />
+    <ClCompile Include="..\Source\CMS\UClientDataHandler.cpp" />
+    <ClCompile Include="..\Source\CMS\UServerDataHandler.cpp" />
+    <ClCompile Include="..\Source\CMS\UDataProcesser.cpp" />
+    <ClCompile Include="..\Source\CMS\UDataReader.cpp" />
+    <ClCompile Include="..\Source\CMS\UServerAccepter.cpp" />
+    <ClCompile Include="..\Source\CMS\UServerBase.cpp" />
+    <ClCompile Include="..\Source\EXPS\ExceptionRaise.cpp" />
+    <ClCompile Include="..\Source\EXPS\FaultRaise.cpp" />
+    <ClCompile Include="..\Source\IFS\DataHandler.cpp" />
+    <ClCompile Include="..\Source\IFS\datasource.cpp" />
+    <ClCompile Include="..\Source\IFS\IFS.cpp" />
+    <ClCompile Include="..\Source\IFS\Observer.cpp" />
+    <ClCompile Include="..\Source\IFS\ReflectionX.cpp" />
+    <ClCompile Include="..\Source\IFS\Subject.cpp" />
+    <ClCompile Include="Demo.cpp" />
     <ClCompile Include="ClientDemo.cpp" />
     <ClCompile Include="ServerDemo.cpp" />
-    <ClCompile Include="..\Source\IF\DataHandler.cpp" />
-    <ClCompile Include="..\Source\IF\Observer.cpp" />
-    <ClCompile Include="..\Source\IF\Subject.cpp" />
     <ClCompile Include="..\Source\IOS\Log.cpp" />
     <ClCompile Include="..\Source\IOS\BufferLogger.cpp" />
-    <ClCompile Include="..\Source\NETS\BufferContainer.cpp" />
-    <ClCompile Include="..\Source\NETS\ClientConnector.cpp" />
-    <ClCompile Include="..\Source\NETS\LockFreeQueue.cpp" />
-    <ClCompile Include="..\Source\NETS\ServerAccepter.cpp" />
-    <ClCompile Include="..\Source\NETS\SvcHandler.cpp" />
-    <ClCompile Include="..\Source\NETS\UClientConnector.cpp" />
-    <ClCompile Include="..\Source\NETS\UDataProcesser.cpp" />
-    <ClCompile Include="..\Source\NETS\UServerAccepter.cpp" />
     <ClCompile Include="..\Source\OSIS\EventXO.cpp" />
     <ClCompile Include="..\Source\OSIS\MutexXO.cpp" />
     <ClCompile Include="..\Source\OSIS\SocketXO.cpp" />
     <ClCompile Include="..\Source\OSIS\TcpSocketXO.cpp" />
     <ClCompile Include="..\Source\OSIS\ThreadX.cpp" />
     <ClCompile Include="..\Source\OSIS\UdpSocketXO.cpp" />
-    <ClCompile Include="UServerDataHandler.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
