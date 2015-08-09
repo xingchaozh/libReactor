@@ -1,47 +1,23 @@
-/*
-*********************************************************************************************************
-*
-*                                     COMMON TASK AND SEMAPHORE
-* 
-* Project       : libReactor
-* Filename      : UServerDataHandler.h
-* Version       : V1.0
-* Programmer(s) : xclyfe@gmail.com
-*********************************************************************************************************
-*/
-/*
-*********************************************************************************************************
-*                                        INCLUDE FILES
-*********************************************************************************************************
-*/
 #pragma once
-#include "..\ifs\datahandler.h"
-#include "UServerAccepter.h"
 
-class UServerDataHandler :
-	public DataHandler
+#include "../IFS/DataHandler.h"
+
+namespace libReactor
 {
-public:
-	UServerDataHandler(void);
-	virtual ~UServerDataHandler(void);
-public :
-	virtual void DataHanle(UdpBuffer & udpBuffer) = 0;
-
-	void SetServerAccepter(UServerAccepter * udpServerAccepter)
+	class UServerAccepter;
+	class LIB_REACTOR_API UServerDataHandler :
+		public DataHandler
 	{
-		udpServerAccepter_ = udpServerAccepter;
-	}
+	public:
+		UServerDataHandler(void);
+		virtual ~UServerDataHandler(void);
+	public:
+		virtual void DataHanle(UdpBuffer & udpBuffer) = 0;
 
-	bool HandleOutput(UdpBuffer & udpBuffer)
-	{
-		bool result = false;
-		if (NULL != udpServerAccepter_)
-		{
-			result = udpServerAccepter_->HandleOutput(udpBuffer);
-		}
-		return result;
-	}
-protected:
-	UServerAccepter * udpServerAccepter_;
-};
+		void SetServerAccepter(UServerAccepter * udpServerAccepter);
 
+		bool HandleOutput(UdpBuffer & udpBuffer);
+	protected:
+		UServerAccepter * udpServerAccepter_;
+	};
+}

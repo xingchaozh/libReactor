@@ -1,63 +1,39 @@
-/*
-*********************************************************************************************************
-*
-*                                     COMMON TASK AND SEMAPHORE
-* 
-* Project       : libReactor
-* Filename      : ReflectionX.h
-* Version       : V1.0
-* Programmer(s) : xclyfe@gmail.com
-*********************************************************************************************************
-*/
-/*
-*********************************************************************************************************
-*                                        INCLUDE FILES
-*********************************************************************************************************
-*/
 #pragma once
 
 #include <string>  
 #include <map>  
 #include <iostream>
+#include <functional>
+
+#include "../Common/DllCommon.h"
 
 using namespace std;
-typedef void* (*CreateFuntion)(void);
 
-class ReflectionClassFactory
+namespace libReactor
 {
-public:
-	static void* GetClassByName(std::string name);
-	static bool RegistClass(std::string name,CreateFuntion method);
+	typedef std::function<void* ()> ClassCreateCB;
+	typedef std::map<std::string, ClassCreateCB> ClassMap;
 
-private:
-	static std::map<std::string,CreateFuntion> m_clsMap;
-};
-
-
-class ReflectionRegistyClass
-{
-public:
-	ReflectionRegistyClass(std::string name, CreateFuntion method);
-};
-
-template<class T>
-class ReflectionRegister
-{
-
-public:
-	ReflectionRegister()
+	class LIB_REACTOR_API ReflectionClassFactory
 	{
-	}
+	public:
+		static void* GetClassByName(std::string name);
+		static bool RegistClass(std::string name, ClassCreateCB method);
 
-	static bool Register()
-	{
-		return ReflectionClassFactory::RegistClass(typeid(T).name(), ReflectionRegister<T>::CreateInstance);
-	}
+	private:
+		static ClassMap m_classMap;
+	};
 
-	static void * CreateInstance()
-	{
-		return new T;
-	}
-};
-
-
+#define ReflectionRegister(T) \
+        (ReflectionClassFactory::RegistClass(typeid(T).name(), [&]()->void *{ return new T; }));
+#define AutoReflectionRegister(T) \
+	class AutoReflectionRegister##T \
+		{ \
+	public:\
+		AutoReflectionRegister##T() \
+			{ \
+			ReflectionRegister(T) \
+			} \
+		}; \
+	static const AutoReflectionRegister##T InstanceAutoReflectionRegister##T;
+}

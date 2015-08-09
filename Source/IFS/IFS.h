@@ -1,39 +1,28 @@
-/*
-*********************************************************************************************************
-*
-*                                     COMMON TASK AND SEMAPHORE
-* 
-* Project       : libReactor
-* Filename      : IFS.h
-* Version       : V1.0
-* Programmer(s) : xclyfe@gmail.com
-*********************************************************************************************************
-*/
-/*
-*********************************************************************************************************
-*                                        INCLUDE FILES
-*********************************************************************************************************
-*/
-#ifndef _X_IFS_
-#define _X_IFS_
+#pragma once
 
 #include "../Common/Common.h"
 
-#include "../CMS/UServerAccepter.h"
-
-#include "../CMS/UDataReader.h"
-#include "../CMS/UDataProcesser.h"
 #include "../CMS/UServerDataHandler.h"
 
-#include "../CMS/UClientConnector.h"
+#include "../CMS/ConnectKeeper.h"
 
-#include "../CMS/connectkeeper.h"
+#include "../CMS/TelegramPackager.h"
+
+#include "../CMS/UBufferContainer.h"
 
 #include "../CMS/UServerBase.h"
 
 #include "../CMS/UClientBase.h"
 
+#include "../CMS/UClientDataHandler.h"
+
 #include "../EXPS/FaultRaise.h"
+
+#include "../OSIS/SocketX.h"
+
+#include "../OSIS/SocketHelper.h"
+
+#include "../OSIS/Thread.h"
 
 extern unsigned int GetCurrentThreadId_X();
 
@@ -51,7 +40,7 @@ public:
 #if DEBUG_X
 		va_list args;
 		va_start( args, format );
-		int len = FaultRaise::Instance()->PrintErrors(format,args);
+		int len = libReactor::FaultRaise::Instance()->PrintErrors(format,args);
 		va_end( args );
 		return len;
 #else
@@ -65,6 +54,3 @@ public:
 #endif
 	}
 };
-
-
-#endif//_X_IFS_

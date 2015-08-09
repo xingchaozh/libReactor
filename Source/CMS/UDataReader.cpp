@@ -1,28 +1,15 @@
-/*
-*********************************************************************************************************
-*
-*                                     COMMON TASK AND SEMAPHORE
-* 
-* Project       : libReactor
-* Filename      : UDataReader.cpp
-* Version       : V1.0
-* Programmer(s) : xclyfe@gmail.com
-*********************************************************************************************************
-*/
-/*
-*********************************************************************************************************
-*                                        INCLUDE FILES
-*********************************************************************************************************
-*/
 #include "UDataReader.h"
+#include "UServerAccepter.h"
+#include "BufferContainer.h"
 
-
+namespace libReactor
+{
 UDataReader::UDataReader(UServerAccepter * udpServerAccepter)
 {
 	udpServerAccepter_ = udpServerAccepter;
 	udpServerAccepter_->Attach(this);
 
-	threadEventNewData_ = new EventXO();
+	event_ = new libReactor::Event();
 	enabled_ = true;
 
 	bufferListRev_ = NULL;
@@ -31,25 +18,29 @@ UDataReader::UDataReader(UServerAccepter * udpServerAccepter)
 
 UDataReader::~UDataReader(void)
 {
+	delete event_;
 }
 
 void UDataReader::Update(Subject * sub)
 {
-	threadEventNewData_->SetEventX();
+	event_->Set();
 }
 
 void UDataReader::ThreadEntryPoint()
 {
 	while (enabled_)
 	{
-		threadEventNewData_->WaitEvent();
+		event_->Wait();
+		if (!enabled_)
+		{
+			break;
+		}
 		Read();
 	}
 }
 
 int UDataReader::Read()
 {
-	//printf("UDataReader::Read():Read!\n");
 	char * ptr = (char *)&(bufferRev_.buffer.message);
 
 	bufferRev_.buffer.length = udpServerAccepter_->RetrieveData(bufferRev_);
@@ -82,4 +73,5 @@ void UDataReader::SetBufferListRev(BufferContainer * bufferListRev)
 void UDataReader::SetEnable(bool bEnabled)
 {
 	enabled_ = bEnabled;
+}
 }

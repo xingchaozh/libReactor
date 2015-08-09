@@ -1,0 +1,186 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{DA529F2B-B195-444C-9CFB-FEE8CB25FDE9}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>ES</RootNamespace>
+    <ProjectName>EchoClient</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>Build\Debug\</OutDir>
+    <IntDir>Build\Debug\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>..\Build\Release\</OutDir>
+    <IntDir>..\Build\Release\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeaderFile />
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\Source\CFGS\ConfigHelper.h" />
+    <ClInclude Include="..\..\Source\CFGS\ConfigStore.h" />
+    <ClInclude Include="..\..\Source\CMS\BlockingQueue.h" />
+    <ClInclude Include="..\..\Source\CMS\BufferContainer.h" />
+    <ClInclude Include="..\..\Source\CMS\ClientConnector.h" />
+    <ClInclude Include="..\..\Source\CMS\connectkeeper.h" />
+    <ClInclude Include="..\..\Source\CMS\LockFreeQueue.h" />
+    <ClInclude Include="..\..\Source\CMS\ServerAccepter.h" />
+    <ClInclude Include="..\..\Source\CMS\SvcHandler.h" />
+    <ClInclude Include="..\..\Source\CMS\TelegramHeader.h" />
+    <ClInclude Include="..\..\Source\CMS\TelegramPackager.h" />
+    <ClInclude Include="..\..\Source\CMS\UBufferContainer.h" />
+    <ClInclude Include="..\..\Source\CMS\UClient.h" />
+    <ClInclude Include="..\..\Source\CMS\UClientBase.h" />
+    <ClInclude Include="..\..\Source\CMS\UClientConnector.h" />
+    <ClInclude Include="..\..\Source\CMS\UClientDataHandler.h" />
+    <ClInclude Include="..\..\Source\CMS\UServer.h" />
+    <ClInclude Include="..\..\Source\CMS\UServerDataHandler.h" />
+    <ClInclude Include="..\..\Source\CMS\UDataProcesser.h" />
+    <ClInclude Include="..\..\Source\CMS\UDataReader.h" />
+    <ClInclude Include="..\..\Source\CMS\UServerAccepter.h" />
+    <ClInclude Include="..\..\Source\CMS\UServerBase.h" />
+    <ClInclude Include="..\..\Source\Common\DllCommon.h" />
+    <ClInclude Include="..\..\Source\Common\Utils.h" />
+    <ClInclude Include="..\..\Source\EXPS\Exception.h" />
+    <ClInclude Include="..\..\Source\EXPS\ExceptionRaise.h" />
+    <ClInclude Include="..\..\Source\EXPS\FaultRaise.h" />
+    <ClInclude Include="..\..\Source\IFS\DataHandler.h" />
+    <ClInclude Include="..\..\Source\IFS\DatasSource.h" />
+    <ClInclude Include="..\..\Source\IFS\IFS.h" />
+    <ClInclude Include="..\..\Source\IFS\IFSInternal.h" />
+    <ClInclude Include="..\..\Source\IFS\Observer.h" />
+    <ClInclude Include="..\..\Source\IFS\ReflectionX.h" />
+    <ClInclude Include="..\..\Source\IFS\Subject.h" />
+    <ClInclude Include="..\..\Source\OSIS\Event.h" />
+    <ClInclude Include="..\..\Source\OSIS\MessageTimer.h" />
+    <ClInclude Include="..\..\Source\OSIS\MessageTimerDefine.h" />
+    <ClInclude Include="..\..\Source\OSIS\SocketHelper.h" />
+    <ClInclude Include="..\..\Source\OSIS\SocketX.h" />
+    <ClInclude Include="..\..\Source\OSIS\TcpSocket.h" />
+    <ClInclude Include="..\..\Source\OSIS\Thread.h" />
+    <ClInclude Include="..\..\Source\OSIS\UdpSocket.h" />
+    <ClInclude Include="..\..\Source\Common\Common.h" />
+    <ClInclude Include="..\..\Source\Common\Consts.h" />
+    <ClInclude Include="..\..\Source\Common\Types.h" />
+    <ClInclude Include="..\..\Source\IOS\Log.h" />
+    <ClInclude Include="..\..\Source\IOS\BufferLogger.h" />
+    <ClInclude Include="EchoClient.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\Source\CFGS\ConfigHelper.cpp" />
+    <ClCompile Include="..\..\Source\CFGS\ConfigStore.cpp" />
+    <ClCompile Include="..\..\Source\CMS\BlockingQueue.cpp" />
+    <ClCompile Include="..\..\Source\CMS\BufferContainer.cpp" />
+    <ClCompile Include="..\..\Source\CMS\ClientConnector.cpp" />
+    <ClCompile Include="..\..\Source\CMS\connectkeeper.cpp" />
+    <ClCompile Include="..\..\Source\CMS\LockFreeQueue.cpp" />
+    <ClCompile Include="..\..\Source\CMS\ServerAccepter.cpp" />
+    <ClCompile Include="..\..\Source\CMS\SvcHandler.cpp" />
+    <ClCompile Include="..\..\Source\CMS\TelegramHeader.cpp" />
+    <ClCompile Include="..\..\Source\CMS\TelegramPackager.cpp" />
+    <ClCompile Include="..\..\Source\CMS\UBufferContainer.cpp" />
+    <ClCompile Include="..\..\Source\CMS\UClient.cpp" />
+    <ClCompile Include="..\..\Source\CMS\UClientBase.cpp" />
+    <ClCompile Include="..\..\Source\CMS\UClientConnector.cpp" />
+    <ClCompile Include="..\..\Source\CMS\UClientDataHandler.cpp" />
+    <ClCompile Include="..\..\Source\CMS\UServer.cpp" />
+    <ClCompile Include="..\..\Source\CMS\UServerDataHandler.cpp" />
+    <ClCompile Include="..\..\Source\CMS\UDataProcesser.cpp" />
+    <ClCompile Include="..\..\Source\CMS\UDataReader.cpp" />
+    <ClCompile Include="..\..\Source\CMS\UServerAccepter.cpp" />
+    <ClCompile Include="..\..\Source\CMS\UServerBase.cpp" />
+    <ClCompile Include="..\..\Source\Common\Utils.cpp" />
+    <ClCompile Include="..\..\Source\EXPS\Exception.cpp" />
+    <ClCompile Include="..\..\Source\EXPS\ExceptionRaise.cpp" />
+    <ClCompile Include="..\..\Source\EXPS\FaultRaise.cpp" />
+    <ClCompile Include="..\..\Source\IFS\DataHandler.cpp" />
+    <ClCompile Include="..\..\Source\IFS\DatasSource.cpp" />
+    <ClCompile Include="..\..\Source\IFS\IFS.cpp" />
+    <ClCompile Include="..\..\Source\IFS\Observer.cpp" />
+    <ClCompile Include="..\..\Source\IFS\ReflectionX.cpp" />
+    <ClCompile Include="..\..\Source\IFS\Subject.cpp" />
+    <ClCompile Include="..\..\Source\OSIS\Event.cpp" />
+    <ClCompile Include="..\..\Source\OSIS\MessageTimer.cpp" />
+    <ClCompile Include="..\..\Source\OSIS\SocketHelper.cpp" />
+    <ClCompile Include="..\..\Source\OSIS\SocketX.cpp" />
+    <ClCompile Include="..\..\Source\OSIS\TcpSocket.cpp" />
+    <ClCompile Include="..\..\Source\OSIS\Thread.cpp" />
+    <ClCompile Include="..\..\Source\OSIS\UdpSocket.cpp" />
+    <ClCompile Include="..\..\Source\IOS\Log.cpp" />
+    <ClCompile Include="..\..\Source\IOS\BufferLogger.cpp" />
+    <ClCompile Include="Demo.cpp" />
+    <ClCompile Include="EchoClient.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\README.md" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

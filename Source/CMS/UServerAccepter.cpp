@@ -3,10 +3,10 @@
 *
 *                                     COMMON TASK AND SEMAPHORE
 * 
-* Project       : libReactor
+* Project       : Ida
 * Filename      : UdpServerAccepter.cpp
 * Version       : V1.0
-* Programmer(s) : xclyfe@gmail.com
+* Programmer(s) : XXX
 *********************************************************************************************************
 */
 /*
@@ -15,79 +15,78 @@
 *********************************************************************************************************
 */
 #include "UServerAccepter.h"
-
-UServerAccepter::UServerAccepter(bool serverServiceEnabled)
+namespace libReactor
+{
+//////////////////////////////////////////////////////////////////////////
+//UServerAccepter
+//////////////////////////////////////////////////////////////////////////
+UServerAccepter::UServerAccepter()
 {
 	socketType_ = SOCKET_TYPE_UDP;
-	bufferListSend_ = NULL;
 	serverService_ = NULL;
-	serverServiceEnabled_ = serverServiceEnabled;
 }
 
 UServerAccepter::~UServerAccepter(void)
 {
-	if(NULL != bufferListSend_)
-	{
-		delete bufferListSend_;
-	}
-	if(NULL != serverService_)
+	if(!serverService_)
 	{
 		serverService_->SetEnabled(false);
-	}//serverService_
+	}
 }
 
 int UServerAccepter::HandleInput()
 {
-	//printf("UServerAccepter::HandleInput():Notify!\n");
 	this->Notify();
 	return 1;
 }
 
-bool UServerAccepter::ProcessOutput()
-{
-	if(!serverServiceEnabled_ && bufferListSend_)
-	{
-		while (bufferListSend_->DeQueue(&bufferSend_))
-		{
-	#if 0//DEBUG_X
-			static int index = 0;
-			printf("(%d) send to (%s:%d) :%d\n",index++, bufferSend_.sockAddr.strAddress,bufferSend_.sockAddr.port,bufferSend_.buffer.length);
-	#endif
-			((UdpSocketXO *)socket_)->SendTo(bufferSend_);
-		}
-	}
-	return true;
-}
-
 bool UServerAccepter::HandleOutput(UdpBuffer & udpBuffer)
 {
-	bool result = true;
-	if(!serverServiceEnabled_)
+	if(!serverService_)
 	{
-		if(NULL == bufferListSend_)
-		{
-			bufferListSend_ = new BufferContainer();
-		}
-		if(!bufferListSend_->EnQueue(udpBuffer))
-		{
-			printf("UdpServerAccepter::HandleOutput():EnQueue Error!\n");
-			result = false; 
-		}
+		serverService_ = new UServerOutputService(socket_);
+		serverService_->Start();
 	}
-	else
-	{
-		if(NULL == serverService_)
-		{
-			serverService_ = new UServerService(socket_);
-			serverService_->Start();
-		}
-		result = serverService_->HandleOutput(udpBuffer);
-	}
-	return result;
+	return serverService_->HandleOutput(udpBuffer);
 }
 
 int UServerAccepter::RetrieveData(UdpBuffer & bufferRev)
 {
-	return ((UdpSocketXO *)socket_)->RecvFrom(bufferRev);
+	std::lock_guard<std::mutex> lock(m_mutexRead);
+	return ((UdpSocket *)socket_)->RecvFrom(bufferRev);
 }
 
+
+//////////////////////////////////////////////////////////////////////////
+//UServerOutputService
+//////////////////////////////////////////////////////////////////////////
+UServerOutputService::UServerOutputService(SocketX * socket):
+	enabled_(true)
+{
+	socket_ = socket;
+}
+
+UServerOutputService::~UServerOutputService()
+{
+}
+
+bool UServerOutputService::HandleOutput(UdpBuffer & udpBuffer)
+{
+	blockingQueue_.Put(udpBuffer);
+	return true;
+}
+
+void UServerOutputService::SetEnabled(bool enabled)
+{
+	enabled_ = enabled;
+}
+
+void UServerOutputService::ThreadEntryPoint()
+{
+	while(enabled_)
+	{
+		blockingQueue_.Take(&bufferSend_);
+		((UdpSocket *)socket_)->SendTo(bufferSend_);
+	}
+}
+}

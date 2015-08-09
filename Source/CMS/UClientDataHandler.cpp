@@ -1,27 +1,28 @@
-/*
-*********************************************************************************************************
-*
-*                                     COMMON TASK AND SEMAPHORE
-* 
-* Project       : libReactor
-* Filename      : UClientDataHandler.cpp
-* Version       : V1.0
-* Programmer(s) : xclyfe@gmail.com
-*********************************************************************************************************
-*/
-/*
-*********************************************************************************************************
-*                                        INCLUDE FILES
-*********************************************************************************************************
-*/
 #include "UClientDataHandler.h"
+#include "UClientConnector.h"
 
-
-UClientDataHandler::UClientDataHandler(void)
+namespace libReactor
 {
-}
+	UClientDataHandler::UClientDataHandler(void)
+	{
+	}
 
+	UClientDataHandler::~UClientDataHandler(void)
+	{
+	}
 
-UClientDataHandler::~UClientDataHandler(void)
-{
+	void UClientDataHandler::SetUClientConnector(UClientConnector * udpClientConnector)
+	{
+		udpClientConnector_ = udpClientConnector;
+	}
+
+	bool UClientDataHandler::HandleOutput(UdpBuffer & udpBuffer)
+	{
+		bool result = false;
+		if (NULL != udpClientConnector_)
+		{
+			result = udpClientConnector_->HandleOutput(udpBuffer);
+		}
+		return result;
+	}
 }

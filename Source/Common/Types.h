@@ -1,19 +1,3 @@
-/*
-*********************************************************************************************************
-*
-*                                     COMMON TASK AND SEMAPHORE
-* 
-* Project       : libReactor
-* Filename      : Types.h
-* Version       : V1.0
-* Programmer(s) : xclyfe@gmail.com
-*********************************************************************************************************
-*/
-/*
-*********************************************************************************************************
-*                                        INCLUDE FILES
-*********************************************************************************************************
-*/
 #pragma once
 
 #include "Consts.h"
@@ -72,4 +56,13 @@ typedef struct _FaultElement
 
 typedef FaultElement FaultElementArray[MAX_NUM_OF_FAULT_ELEMENT];
 
-
+typedef struct _NetPackageTime
+{
+	UINT16 Year;
+	UINT16 Month;
+	UINT16 Day;
+	UINT16 Hour;
+	UINT16 Minute;
+	UINT16 Second;
+	UINT16 Millisecond;
+}NetPackageTime;

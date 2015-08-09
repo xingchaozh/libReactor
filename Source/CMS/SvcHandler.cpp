@@ -1,26 +1,13 @@
-/*
-*********************************************************************************************************
-*
-*                                     COMMON TASK AND SEMAPHORE
-* 
-* Project       : libReactor
-* Filename      : SvcHandler.cpp
-* Version       : V1.0
-* Programmer(s) : xclyfe@gmail.com
-*********************************************************************************************************
-*/
-/*
-*********************************************************************************************************
-*                                        INCLUDE FILES
-*********************************************************************************************************
-*/
 #include "SvcHandler.h"
 
-SvcHandler::SvcHandler(void)
+namespace libReactor
 {
-}
+	SvcHandler::SvcHandler(void)
+	{
+	}
 
-SvcHandler::~SvcHandler(void)
-{
+	SvcHandler::~SvcHandler(void)
+	{
+	}
 }
 

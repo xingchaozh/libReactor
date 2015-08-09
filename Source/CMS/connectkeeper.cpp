@@ -1,68 +1,62 @@
-/*
-*********************************************************************************************************
-*
-*                                     COMMON TASK AND SEMAPHORE
-* 
-* Project       : libReactor
-* Filename      : ConnectKeeper.cpp
-* Version       : V1.0
-* Programmer(s) : xclyfe@gmail.com
-*********************************************************************************************************
-*/
-/*
-*********************************************************************************************************
-*                                        INCLUDE FILES
-*********************************************************************************************************
-*/
-#include "connectkeeper.h"
+#include "ConnectKeeper.h"
+#include "../IFS/IFS.h"
 
-ConnectKeeper::ConnectKeeper(UINT32 commLostTime):leaveFreshCount_(0),
-	commLostTime_(commLostTime),
-	commEstablished_(false)
+namespace libReactor
 {
-}
-
-ConnectKeeper::~HSIConnectKeeper()
-{
-}
-
-void ConnectKeeper::Execute()
-{
-}
-
-void ConnectKeeper::SetCommEstablished(bool commEstablished)
-{
-    commEstablished_ = commEstablished;
-    if(commEstablished_)
-    {
-        leaveFreshCount_ = 0;
-    }
-}
-
-bool ConnectKeeper::GetCommEstablished()
-{
-    return commEstablished_;
-}
-
-void ConnectKeeper::LeaveFreshCountReset()
-{
-	if(!GetCommEstablished())
+	ConnectKeeper::ConnectKeeper(UINT32 commLostTime) :m_leaveFreshCount(0),
+		m_commLostTime(commLostTime),
+		m_commEstablished(false),
+		m_description("")
 	{
-		SetCommEstablished(true);
-		printf("ConnectKeeper::SetCommEstablished(true)\n");
 	}
-	leaveFreshCount_ = 0;
-}
 
-void ConnectKeeper::Update(Subject * sub)
-{
-	if(GetCommEstablished())
+	ConnectKeeper::~ConnectKeeper()
 	{
-		leaveFreshCount_ += 1;
-		if (leaveFreshCount_ > commLostTime_ / APP_CYCLE_TIME)
+	}
+
+	void ConnectKeeper::Execute()
+	{
+	}
+
+	void ConnectKeeper::SetCommEstablished(bool commEstablished)
+	{
+		m_commEstablished = commEstablished;
+		if (m_commEstablished)
 		{
-			SetCommEstablished(false);
-			printf("ConnectKeeper::Update: Communication Lost!\n");
+			m_leaveFreshCount = 0;
 		}
+	}
+
+	bool ConnectKeeper::GetCommEstablished()
+	{
+		return m_commEstablished;
+	}
+
+	void ConnectKeeper::LeaveFreshCountReset()
+	{
+		if (!GetCommEstablished())
+		{
+			SetCommEstablished(true);
+			IFS::PrintErrors("ConnectKeeper::SetCommEstablished(true) : %s !\n", m_description.c_str());
+		}
+		m_leaveFreshCount = 0;
+	}
+
+	void ConnectKeeper::Update(Subject * sub)
+	{
+		if (GetCommEstablished())
+		{
+			m_leaveFreshCount += 1;
+			if (m_leaveFreshCount > m_commLostTime / APP_CYCLE_TIME)
+			{
+				SetCommEstablished(false);
+				IFS::PrintErrors("ConnectKeeper::Update: Communication Lost: %s !\n", m_description.c_str());
+			}
+		}
+	}
+
+	void ConnectKeeper::SetDescription(std::string description)
+	{
+		this->m_description = description;
 	}
 }

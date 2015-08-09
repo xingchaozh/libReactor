@@ -1,69 +1,54 @@
-/*
-*********************************************************************************************************
-*
-*                                     COMMON TASK AND SEMAPHORE
-* 
-* Project       : libReactor
-* Filename      : UdpDataProcesser.cpp
-* Version       : V1.0
-* Programmer(s) : xclyfe@gmail.com
-*********************************************************************************************************
-*/
-/*
-*********************************************************************************************************
-*                                        INCLUDE FILES
-*********************************************************************************************************
-*/
 #include "UDataProcesser.h"
+#include "UBufferContainer.h"
 
-UDataProcesser::UDataProcesser(UBufferContainer * bufferContainer):enabled_(true),dataHandler_(NULL)
+namespace libReactor
 {
-	bufferContainer_ = bufferContainer;
-	bufferContainer_->Attach(this);
-
-	threadEventNewData_ = new EventXO();
-}
-
-UDataProcesser::~UDataProcesser(void)
-{
-}
-
-void UDataProcesser::Update(Subject * sub)
-{
-	//printf("UDataProcesser::Update!\n");
-	threadEventNewData_->SetEventX();
-}
-
-void UDataProcesser::ProcessData(UdpBuffer & bufferRev)
-{
-	//printf("UDataProcesser::ProcessData!\n");
-#if 0//DEBUG_X
-	static int index = 0;
-	printf("(%d) %d Rev msg from (%s:%d) : length:%d\n",index++,this->GetThreadId(),bufferRev.sockAddr.strAddress,bufferRev.sockAddr.port,bufferRev.buffer.length);
-#endif
-	if(dataHandler_!=NULL)
+	UDataProcesser::UDataProcesser(UBufferContainer * bufferContainer) :enabled_(true), dataHandler_(NULL)
 	{
-		dataHandler_->DataHanle(bufferRev);
+		bufferContainer_ = bufferContainer;
+		bufferContainer_->Attach(this);
+
+		threadEventNewData_ = new libReactor::Event();
 	}
-	//char buffer[]="Ack from server.";
-	//((UdpSocketXO *)udpServerAccepter_->GetUdpSocket())->SendTo(buffer,strlen(buffer),(sockaddr *)&(bufferRev.sockAddr),sizeof(bufferRev.sockAddr));
-}
 
-void UDataProcesser::ThreadEntryPoint()
-{
-	while (enabled_)
+	UDataProcesser::~UDataProcesser(void)
 	{
-		threadEventNewData_->WaitEvent();
+		delete threadEventNewData_;
+	}
 
-		UdpBuffer bufferRev;
-		while(bufferContainer_->DeQueue(&bufferRev))
+	void UDataProcesser::Update(Subject * sub)
+	{
+		threadEventNewData_->Set();
+	}
+
+	void UDataProcesser::ProcessData(UdpBuffer & bufferRev)
+	{
+		if (dataHandler_ != NULL)
 		{
-			ProcessData(bufferRev);
+			dataHandler_->DataHanle(bufferRev);
 		}
 	}
-}
 
-void UDataProcesser::SetEnable(bool bEnabled)
-{
-	enabled_ = bEnabled;
+	void UDataProcesser::ThreadEntryPoint()
+	{
+		while (enabled_)
+		{
+			threadEventNewData_->Wait();
+			if (!enabled_)
+			{
+				break;
+			}
+
+			UdpBuffer bufferRev;
+			while (bufferContainer_->DeQueue(&bufferRev))
+			{
+				ProcessData(bufferRev);
+			}
+		}
+	}
+
+	void UDataProcesser::SetEnable(bool bEnabled)
+	{
+		enabled_ = bEnabled;
+	}
 }

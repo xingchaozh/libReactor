@@ -1,22 +1,14 @@
-/*
-*********************************************************************************************************
-*
-*                                     COMMON TASK AND SEMAPHORE
-* 
-* Project       : libReactor
-* Filename      : UServerBase.cpp
-* Version       : V1.0
-* Programmer(s) : xclyfe@gmail.com
-*********************************************************************************************************
-*/
-/*
-*********************************************************************************************************
-*                                        INCLUDE FILES
-*********************************************************************************************************
-*/
 #include "UServerBase.h"
-#include "../IFS/ReflectionX.h"
 
+#include "UDataReader.h"
+#include "UDataProcesser.h"
+#include "UServerDataHandler.h"
+#include "UServerAccepter.h"
+#include "UBufferContainer.h"
+
+#include "../IFS/ReflectionX.h"
+namespace libReactor
+{
 UServerBase::UServerBase(UINT16 bufferSize, UINT16 numDataReader, UINT16 unmDataProcesser, long timeOut):
 	serverAccepter_(NULL),vecUDataReader_(NULL),vecDataProcesser_(NULL),vecDataHandler_(NULL),UBufferContainer_(NULL),
 	ServiceStarted_(false),
@@ -46,8 +38,7 @@ bool  UServerBase::SetParameters(UINT16 bufferSize, UINT16 numDataReader, UINT16
 
 void UServerBase::Execute(string serverHost,       //Local host location
 						  int serverPort,              //Local host port
-						  string dataHandlerClassName,
-						  long timeOut)
+						  string dataHandlerClassName)
 {
 	if(ServiceStarted_)
 	{
@@ -57,7 +48,6 @@ void UServerBase::Execute(string serverHost,       //Local host location
 	//Create the communication server thread
 	serverAccepter_ = new UServerAccepter();
 	serverAccepter_->Initialize(serverHost,serverPort);
-	serverAccepter_->SetTimeOut(timeOut);
 	serverAccepter_->Start();
 
 	//create the data process thread list
@@ -100,48 +90,41 @@ bool UServerBase::HandleOutput(UdpBuffer & udpBuffer)
 }
 
 
-void UServerBase::WaitForExit()
-{
-	this->serverAccepter_->WaitForExit();
-}
-
 void UServerBase::Destroy()
 {
 	if(!ServiceStarted_)
 	{
 		return;
 	}
-
 	//serverAccepter_
 	if(NULL != serverAccepter_)
 	{
 		serverAccepter_->SetEnable(false);
-		serverAccepter_->WaitForExit();
+		serverAccepter_->Join();
 	}
 
 	//vecUDataReader_
-	vector<UDataReader *>::iterator j = vecUDataReader_.begin();
-	for (; j != vecUDataReader_.end(); j++)
+	for (auto j = vecUDataReader_.begin(); j != vecUDataReader_.end(); j++)
 	{
 		(*j)->SetEnable(false);
-		(*j)->TerminateThreadX(0);
+		(*j)->Update(NULL);
+		(*j)->Join();
 		delete (*j);
 	}
 
 	//vecDataProcesser_
-	vector<UDataProcesser *>::iterator i = vecDataProcesser_.begin();
-	for (; i != vecDataProcesser_.end(); i++)
+	for (auto i = vecDataProcesser_.begin(); i != vecDataProcesser_.end(); i++)
 	{
 		(*i)->SetEnable(false);
-		(*i)->TerminateThreadX(0);
+		(*i)->Update(NULL);
+		(*i)->Join();
 		delete (*i);
 	}
 
 	//vecDataHandler_
-	vector<UServerDataHandler *>::iterator k = vecDataHandler_.begin();
-	for (; k != vecDataHandler_.end(); k++)
+	for (auto k = vecDataHandler_.begin(); k != vecDataHandler_.end(); k++)
 	{
-		delete (*i);
+		delete (*k);
 	}
 
 	//UBufferContainer_
@@ -150,12 +133,6 @@ void UServerBase::Destroy()
 		delete UBufferContainer_;
 		UBufferContainer_ = NULL;
 	}
-
-	if(NULL != serverAccepter_)
-	{
-		delete serverAccepter_;
-		serverAccepter_ = NULL;
-	}
-
 	ServiceStarted_ = false;
+}
 }

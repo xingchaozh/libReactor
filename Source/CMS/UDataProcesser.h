@@ -1,47 +1,30 @@
-/*
-*********************************************************************************************************
-*
-*                                     COMMON TASK AND SEMAPHORE
-* 
-* Project       : libReactor
-* Filename      : UdpDataProcesser.h
-* Version       : V1.0
-* Programmer(s) : xclyfe@gmail.com
-*********************************************************************************************************
-*/
-/*
-*********************************************************************************************************
-*                                        INCLUDE FILES
-*********************************************************************************************************
-*/
 #pragma once
+
 #include "../IFS/IFSInternal.h"
 #include "../IFS/DataHandler.h"
 #include "../IFS/Observer.h"
 
-#include "UBufferContainer.h"
-
-class UDataProcesser :
-	public Observer, public ThreadX
+namespace libReactor
 {
-public:
-	UDataProcesser(UBufferContainer * bufferContainer);
-	virtual ~UDataProcesser();
-	void SetEnable(bool bEnabled);
-	void SetDataHanler(DataHandler * dataHandler)
+	class UBufferContainer;
+	class UDataProcesser :
+		public Observer, public libReactor::Thread
 	{
-		dataHandler_ = dataHandler;
-	}
-protected:
+	public:
+		UDataProcesser(UBufferContainer * bufferContainer);
+		virtual ~UDataProcesser();
+		void SetEnable(bool bEnabled);
+		void SetDataHanler(DataHandler * dataHandler) { dataHandler_ = dataHandler; }
+		virtual void Update(Subject * sub);
 
-	void ProcessData(UdpBuffer & bufferRev);
-	virtual void ThreadEntryPoint();
-	virtual void Update(Subject * sub);
+	protected:
+		void ProcessData(UdpBuffer & bufferRev);
+		virtual void ThreadEntryPoint();
 
-private:
-	UBufferContainer * bufferContainer_;
-	EventXO * threadEventNewData_;
-	bool enabled_;
-	DataHandler * dataHandler_;
-};
-
+	private:
+		UBufferContainer * bufferContainer_;
+		libReactor::Event * threadEventNewData_;
+		bool enabled_;
+		DataHandler * dataHandler_;
+	};
+}

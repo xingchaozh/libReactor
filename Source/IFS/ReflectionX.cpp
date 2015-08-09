@@ -1,40 +1,25 @@
-/*
-*********************************************************************************************************
-*
-*                                     COMMON TASK AND SEMAPHORE
-* 
-* Project       : libReactor
-* Filename      : ReflectionX.cpp
-* Version       : V1.0
-* Programmer(s) : xclyfe@gmail.com
-*********************************************************************************************************
-*/
-/*
-*********************************************************************************************************
-*                                        INCLUDE FILES
-*********************************************************************************************************
-*/
 #include "ReflectionX.h"
 
-std::map<std::string, CreateFuntion> ReflectionClassFactory::m_clsMap;
-
-void* ReflectionClassFactory::GetClassByName(std::string name)
+namespace libReactor
 {
-	std::map<std::string,CreateFuntion>::const_iterator find;
-	find = m_clsMap.find(name);
-	if(find==m_clsMap.end())
+	std::map<std::string, ClassCreateCB> ReflectionClassFactory::m_classMap;
+
+	void* ReflectionClassFactory::GetClassByName(std::string className)
 	{
-		return NULL;
+		const auto find = m_classMap.find(className);
+		if (find == m_classMap.end())
+		{
+			return NULL;
+		}
+		else
+		{
+			return find->second();
+		}
 	}
-	else
+
+	bool ReflectionClassFactory::RegistClass(std::string name, ClassCreateCB method)
 	{
-		return find->second();
+		auto result = m_classMap.insert(std::make_pair(name, method));
+		return result.second;
 	}
 }
-
-bool ReflectionClassFactory::RegistClass(std::string name,CreateFuntion method)
-{
-	m_clsMap.insert(std::make_pair(name,method));
-	return true;
-}
-

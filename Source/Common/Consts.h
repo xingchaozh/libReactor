@@ -1,19 +1,3 @@
-/*
-*********************************************************************************************************
-*
-*                                     COMMON TASK AND SEMAPHORE
-* 
-* Project       : libReactor
-* Filename      : ConstsX.h
-* Version       : V1.0
-* Programmer(s) : xclyfe@gmail.com
-*********************************************************************************************************
-*/
-/*
-*********************************************************************************************************
-*                                        INCLUDE FILES
-*********************************************************************************************************
-*/
 #pragma once
 
 #define DEBUG_X                             (1)
@@ -50,14 +34,11 @@
 
 #define MAX_NUM_OF_FAULT_ELEMENT            (16) //MAX_NUM_OF_FAULT_ELEMENT必须为2的指数倍，否则快速取模操作会失败
 
-#define SERVER_LISTEN_PORT                  (6001)
-#define CLIENT_LISTEN_PORT                  (8001)
-
-
 #define USERVER_BUFFER_SIZE                 (MAX_SIZE_OF_RING_BUFFER)
 #define NUM_USERVER_DATA_READER             (2)
 #define NUM_USERVER_DATA_PROCESSER          (3)
 #define USERVER_LISTEN_TIMEOUT              (50)
+
 
 #define MIN(a,b)                            ((a)<(b)?(a):(b))
 #define MAX(a,b)                            ((a)>(b)?(a):(b))
